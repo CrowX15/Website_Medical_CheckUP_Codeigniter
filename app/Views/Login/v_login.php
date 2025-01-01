@@ -43,22 +43,25 @@
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Login Medical Check Up</h1>
                                     </div>
-                                    <form class="user">
+                                    <form class="user" action="<?= base_url('auth/login') ?>" method="POST">
+                                        <?= csrf_field() ?>
+                                        
+                                        <!-- Tampilin pesan error kalo ada -->
+                                        <?php if(session()->getFlashdata('error')) : ?>
+                                            <div class="alert alert-danger">
+                                                <?= session()->getFlashdata('error') ?>
+                                            </div>
+                                        <?php endif; ?>
+                                        
                                         <div class="form-group">
-                                            <input type="email" class="form-control form-control-user"
-                                                id="exampleInputEmail" aria-describedby="emailHelp"
-                                                placeholder="Email or Username">
+                                            <input type="text" name="username" placeholder="Username dong...">
                                         </div>
                                         <div class="form-group">
-                                            <input type="password" class="form-control form-control-user"
-                                                id="exampleInputPassword" placeholder="Password">
+                                            <input type="password" name="password" placeholder="Password...">
                                         </div>
-                                        
-                                        <a href="index.html" class="btn btn-primary btn-user btn-block">
-                                            Login
-                                        </a>
-                                        <hr>
-                                        
+                                        <button type="submit" class="btn btn-primary btn-block">
+                                            Masuk Yuk!
+                                        </button>
                                     </form>
 
                                     <div class="text-center">
