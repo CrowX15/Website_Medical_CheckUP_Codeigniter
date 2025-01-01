@@ -6,6 +6,8 @@ use CodeIgniter\Router\RouteCollection;
  * @var RouteCollection $routes
  */
 
+// Tambahkan ini untuk redirect ke halaman login
+$routes->get('/', 'Auth::index');
 
 $routes->group('', ['filter' => 'auth'], function($routes) {
     // Route untuk Admin SIRS (role_id = 1)
@@ -34,4 +36,6 @@ $routes->group('', ['filter' => 'auth'], function($routes) {
 // Route yang bisa diakses tanpa login
 $routes->get('auth', 'Auth::index');
 $routes->post('auth/login', 'Auth::login');
+$routes->get('auth/register', 'Auth::register'); 
+$routes->post('auth/register', 'Auth::register'); 
 $routes->get('auth/logout', 'Auth::logout');

@@ -1,5 +1,6 @@
 <?php
 namespace App\Controllers;
+use App\Models\UserModel;
 
 class Auth extends BaseController
 {
@@ -20,7 +21,7 @@ class Auth extends BaseController
         if ($this->session->get('logged_in')) {
             return redirect()->to(base_url('dashboard'));
         }
-        return view('login/v_login');
+        return view('auth/v_login');
     }
 
     // Nah ini method buat proses loginnya
@@ -74,5 +75,58 @@ class Auth extends BaseController
 
         return redirect()->to(base_url('auth'));
     }
+
+    public function register()
+    {
+        // Jika sudah login, redirect ke dashboard
+        if ($this->session->get('logged_in')) {
+            return redirect()->to(base_url('dashboard'));
+        }
+    
+        // Ambil data roles untuk dropdown
+        $roleModel = new \App\Models\RoleModel();
+        $data['roles'] = $roleModel->getRegisterableRoles();
+    
+        if ($this->request->getMethod() === 'post') {
+            // Validasi input
+            $rules = [
+                'nama_lengkap' => 'required|min_length[3]',
+                'username' => 'required|min_length[3]|is_unique[users.username]',
+                'password' => 'required|min_length[6]',
+                'confirm_password' => 'required|matches[password]',
+                'role_id' => 'required|numeric|is_not_unique[roles.id]'
+            ];
+        
+            if (!$this->validate($rules)) {
+                return redirect()->back()
+                               ->withInput()
+                               ->with('error', $this->validator->listErrors());
+            }
+        
+            // Data yang akan disimpan
+            $data = [
+                'nama_lengkap' => $this->request->getPost('nama_lengkap'),
+                'username' => $this->request->getPost('username'),
+                'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
+                'role_id' => $this->request->getPost('role_id'),
+                'created_at' => date('Y-m-d H:i:s')
+            ];
+        
+            try {
+                $this->userModel->insert($data);
+                return redirect()->to(base_url('auth'))
+                               ->with('success', 'Registrasi berhasil! Silakan login.');
+            } catch (\Exception $e) {
+                return redirect()->back()
+                               ->withInput()
+                               ->with('error', 'Terjadi kesalahan saat mendaftar.');
+            }
+        }
+    
+        // Tampilkan view register
+        return view('auth/v_register', $data);
+    }
+
+
 
 }
