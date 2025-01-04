@@ -17,6 +17,11 @@ class User extends Migration //2024-12-31-125745_User.php
                 'unsigned' => true,
                 'auto_increment' => true,
             ],
+            'nama_lengkap' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
+                'null' => false,
+            ],
             'username' => 
             [
                 'type' => 'VARCHAR',

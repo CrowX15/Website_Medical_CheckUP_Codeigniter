@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Database\Seeds;
 
 use CodeIgniter\Database\Seeder;
@@ -8,62 +7,52 @@ class RoleSeeder extends Seeder
 {
     public function run()
     {
+        $now = date('Y-m-d H:i:s');
         $data = [
             [
-                'id' => 1,
-                'name' => 'admin',
-                'description' => 'Administrator SIRS',
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
+                'name' => 'admin_sirs',
+                'description' => 'Administrator Sistem Informasi Rumah Sakit',
+                'created_at' => $now,
+                'updated_at' => $now,
             ],
             [
-                'id' => 2,
                 'name' => 'loket',
                 'description' => 'Petugas Loket',
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
+                'created_at' => $now,
+                'updated_at' => $now,
             ],
             [
-                'id' => 3,
-                'name' => 'dokter',
+                'name' => 'dokter', 
                 'description' => 'Dokter',
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
+                'created_at' => $now,
+                'updated_at' => $now,
             ],
             [
-                'id' => 4,
                 'name' => 'user_lab',
                 'description' => 'User Laboratorium',
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
+                'created_at' => $now,
+                'updated_at' => $now,
             ],
             [
-                'id' => 5,
                 'name' => 'admin_lab',
                 'description' => 'Admin Laboratorium',
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
+                'created_at' => $now,
+                'updated_at' => $now,
             ],
             [
-                'id' => 6,
-                'name' => 'user_radiologi',
+                'name' => 'user_rad',
                 'description' => 'User Radiologi',
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
+                'created_at' => $now,
+                'updated_at' => $now,
             ],
             [
-                'id' => 7,
-                'name' => 'admin_radiologi',
+                'name' => 'admin_rad',
                 'description' => 'Admin Radiologi',
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
+                'created_at' => $now,
+                'updated_at' => $now,
             ]
         ];
 
-        // Truncate table first
-        $this->db->table('roles')->truncate();
-        
-        // Insert data
         $this->db->table('roles')->insertBatch($data);
     }
 }

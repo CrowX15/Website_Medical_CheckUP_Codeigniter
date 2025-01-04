@@ -57,6 +57,23 @@
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Buat Akun Baru!</h1>
                                     </div>
+
+                                    <?php if(session()->has('error')): ?>
+                                        <div class="alert alert-danger">
+                                            <?php 
+                                            $errors = session('error');
+                                            if(is_array($errors)) {
+                                                foreach($errors as $error) {
+                                                    echo $error . "<br>";
+                                                }
+                                            } else {
+                                                echo $errors;
+                                            }
+                                            ?>
+                                        </div>
+                                    <?php endif; ?>
+                                        
+
                                     <form class="user" action="<?= base_url('auth/register') ?>" method="POST">
                                         <?= csrf_field() ?>
                                         
@@ -101,6 +118,14 @@
                                                        placeholder="Konfirmasi Password"
                                                        required>
                                             </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="email" 
+                                                   class="form-control form-control-user" 
+                                                   name="email" 
+                                                   placeholder="Email Address"
+                                                   value="<?= old('email') ?>"
+                                                   required>
                                         </div>
                                         <div class="form-group">
                                             <label for="role_id">Pilih Role</label>
