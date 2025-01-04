@@ -144,7 +144,7 @@
                                     </form>
                                     <hr>
                                     <div class="text-center">
-                                        <a class="small" href="<?= base_url('auth/login') ?>">Sudah punya akun? Login!</a>
+                                        <a class="small" href="<?= base_url('auth') ?>">Sudah punya akun? Login!</a>
                                     </div>
                                 </div>
                             </div>
