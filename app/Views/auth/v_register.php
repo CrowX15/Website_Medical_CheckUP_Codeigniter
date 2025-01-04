@@ -74,74 +74,72 @@
                                     <?php endif; ?>
                                         
 
-                                    <form class="user" action="<?= base_url('auth/register') ?>" method="POST">
+                                    <form class="user" method="POST" action="<?= base_url('auth/register') ?>">
                                         <?= csrf_field() ?>
-                                        
+                                                                            
                                         <?php if(session()->getFlashdata('error')) : ?>
                                             <div class="alert alert-danger">
                                                 <?= session()->getFlashdata('error') ?>
                                             </div>
                                         <?php endif; ?>
-
-                                        <?php if(session()->getFlashdata('success')) : ?>
-                                            <div class="alert alert-success">
-                                                <?= session()->getFlashdata('success') ?>
-                                            </div>
-                                        <?php endif; ?>
                                         
                                         <div class="form-group">
-                                            <input type="text" 
-                                                   class="form-control form-control-user" 
-                                                   name="nama_lengkap" 
-                                                   placeholder="Nama Lengkap"
-                                                   required>
+                                            <input type="text" class="form-control form-control-user" name="username" 
+                                                   value="<?= old('username') ?>" placeholder="Username">
+                                            <?php if(isset($validation) && $validation->hasError('username')): ?>
+                                                <small class="text-danger"><?= $validation->getError('username') ?></small>
+                                            <?php endif; ?>
                                         </div>
+                                            
                                         <div class="form-group">
-                                            <input type="text" 
-                                                   class="form-control form-control-user" 
-                                                   name="username" 
-                                                   placeholder="Username"
-                                                   required>
+                                            <input type="password" class="form-control form-control-user" name="password" 
+                                                   placeholder="Password">
+                                            <?php if(isset($validation) && $validation->hasError('password')): ?>
+                                                <small class="text-danger"><?= $validation->getError('password') ?></small>
+                                            <?php endif; ?>
                                         </div>
-                                        <div class="form-group row">
-                                            <div class="col-sm-6 mb-3 mb-sm-0">
-                                                <input type="password" 
-                                                       class="form-control form-control-user" 
-                                                       name="password" 
-                                                       placeholder="Password"
-                                                       required>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <input type="password" 
-                                                       class="form-control form-control-user" 
-                                                       name="confirm_password" 
-                                                       placeholder="Konfirmasi Password"
-                                                       required>
-                                            </div>
-                                        </div>
+                                            
                                         <div class="form-group">
-                                            <input type="email" 
-                                                   class="form-control form-control-user" 
-                                                   name="email" 
-                                                   placeholder="Email Address"
-                                                   value="<?= old('email') ?>"
-                                                   required>
+                                            <input type="password" class="form-control form-control-user" name="confirm_password" 
+                                                   placeholder="Konfirmasi Password">
+                                            <?php if(isset($validation) && $validation->hasError('confirm_password')): ?>
+                                                <small class="text-danger"><?= $validation->getError('confirm_password') ?></small>
+                                            <?php endif; ?>
                                         </div>
+                                            
                                         <div class="form-group">
-                                            <label for="role_id">Pilih Role</label>
-                                            <select class="form-control" id="role_id" name="role_id" required>
+                                            <input type="email" class="form-control form-control-user" name="email" 
+                                                   value="<?= old('email') ?>" placeholder="Email">
+                                        </div>
+                                            
+                                        <div class="form-group">
+                                            <select class="form-control" name="role_id">
                                                 <option value="">Pilih Role</option>
-                                                <?php foreach ($roles as $role): ?>
+                                                <?php foreach($roles as $role): ?>
                                                     <option value="<?= $role['id'] ?>" <?= old('role_id') == $role['id'] ? 'selected' : '' ?>>
-                                                        <?= esc($role['name']) ?> - <?= esc($role['description']) ?>
+                                                        <?= $role['name'] ?>
                                                     </option>
                                                 <?php endforeach; ?>
                                             </select>
+                                            <?php if(isset($validation) && $validation->hasError('role_id')): ?>
+                                                <small class="text-danger"><?= $validation->getError('role_id') ?></small>
+                                            <?php endif; ?>
                                         </div>
+                                            
+                                        <div class="form-group">
+                                            <input type="text" class="form-control form-control-user" name="nama_lengkap" 
+                                                   value="<?= old('nama_lengkap') ?>" placeholder="Nama Lengkap">
+                                            <?php if(isset($validation) && $validation->hasError('nama_lengkap')): ?>
+                                                <small class="text-danger"><?= $validation->getError('nama_lengkap') ?></small>
+                                            <?php endif; ?>
+                                        </div>
+                                            
                                         <button type="submit" class="btn btn-primary btn-user btn-block">
-                                            Daftar Akun
+                                            Register
                                         </button>
                                     </form>
+                                            
+
                                     <hr>
                                     <div class="text-center">
                                         <a class="small" href="<?= base_url('auth') ?>">Sudah punya akun? Login!</a>

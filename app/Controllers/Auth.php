@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controllers;
+
 use App\Models\UserModel;
 use App\Models\RoleModel;
 
@@ -17,12 +18,30 @@ class Auth extends BaseController
 
     public function index()
     {
-        // Tampilkan halaman login
+        // Jika sudah login, redirect ke dashboard sesuai role
+        if (session()->get('logged_in')) {
+            return $this->redirectBasedOnRole(session()->get('role_id'));
+        }
+        
         return view('auth/v_login');
     }
 
     public function login()
     {
+        // Pastikan tidak ada session aktif
+        if (session()->get('logged_in')) {
+            session()->destroy();
+        }
+
+        // Validasi input
+        if (!$this->validate([
+            'username' => 'required',
+            'password' => 'required'
+        ])) {
+            return redirect()->back()->withInput()->with('error', 'Username dan password harus diisi');
+        }
+
+        // Proses login
         $username = $this->request->getPost('username');
         $password = $this->request->getPost('password');
 
@@ -37,90 +56,63 @@ class Auth extends BaseController
             ];
             
             session()->set($sessionData);
-
-            // Redirect berdasarkan role
-            switch ($user['role_id']) {
-                case 1: return redirect()->to(base_url('admin/dashboard'));
-                case 2: return redirect()->to(base_url('loket/dashboard')); 
-                case 3: return redirect()->to(base_url('dokter/dashboard'));
-                case 4: return redirect()->to(base_url('laboratorium/dashboard'));
-                case 5: return redirect()->to(base_url('admin-lab/dashboard'));
-                case 6: return redirect()->to(base_url('radiologi/dashboard'));
-                case 7: return redirect()->to(base_url('admin-rad/dashboard'));
-                default: return redirect()->to(base_url('auth'));
-            }
-        }
-
-        // Jika login gagal
-        session()->setFlashdata('error', 'Username atau Password salah');
-        return redirect()->back();
-    }
-
-    public function register() 
-    {
-        helper(['form']);
-        
-        if ($this->request->getMethod() === 'post') {
-            // Data yang akan divalidasi
-            $data = [
-                'username' => $this->request->getPost('username'),
-                'password' => $this->request->getPost('password'),
-                'confirm_password' => $this->request->getPost('confirm_password'),
-                'email' => $this->request->getPost('email'),
-                'role_id' => $this->request->getPost('role_id'),
-                'nama_lengkap' => $this->request->getPost('nama_lengkap')
-            ];
-    
-            // Validasi
-            $rules = [
-                'username' => 'required|min_length[4]|is_unique[user.username]',
-                'password' => 'required|min_length[6]',
-                'confirm_password' => 'required|matches[password]',
-                'email' => 'permit_empty|valid_email|is_unique[user.email]',
-                'role_id' => 'required|numeric',
-                'nama_lengkap' => 'required'
-            ];
-    
-            if (!$this->validate($rules)) {
-                // Debug validasi error
-                var_dump($this->validator->getErrors());
-                
-                return redirect()->back()
-                               ->withInput()
-                               ->with('error', $this->validator->getErrors());
-            }
-    
-            // Hapus confirm_password dari data
-            unset($data['confirm_password']);
             
-            // Hash password
-            $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+            // Update last login
+            $this->userModel->update($user['id'], ['last_login' => date('Y-m-d H:i:s')]);
+            
+            return $this->redirectBasedOnRole($user['role_id']);
+        }
+
+        return redirect()->back()->with('error', 'Username atau password salah');
+    }
+
+    public function register()
+    {
+        $rules = [
+            'username' => 'required|is_unique[users.username]',
+            'password' => 'required|min_length[6]',
+            'email' => 'required|valid_email|is_unique[users.email]',
+            'nama_lengkap' => 'required'
+        ];
     
-            try {
-                // Debug data sebelum insert
-                var_dump($data);
+        if ($this->request->getMethod() === 'post') {
+            if ($this->validate($rules)) {
+                $userModel = new UserModel();
                 
-                $this->userModel->insert($data);
-                
+                $data = [
+                    'username' => $this->request->getPost('username'),
+                    'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
+                    'email' => $this->request->getPost('email'),
+                    'nama_lengkap' => $this->request->getPost('nama_lengkap'),
+                    'role' => 'user'
+                ];
+    
+                $userModel->save($data);
                 session()->setFlashdata('success', 'Registrasi berhasil! Silakan login.');
-                return redirect()->to(base_url('auth'));
-            } catch (\Exception $e) {
-                log_message('error', '[ERROR] {exception}', ['exception' => $e->getMessage()]);
-                return redirect()->back()
-                               ->withInput()
-                               ->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+                return redirect()->to('/login');
             }
         }
-    
-        $data['roles'] = $this->roleModel->findAll();
-        return view('auth/v_register', $data);
+        return view('auth/register');
     }
     
-
 
     public function logout()
     {
         session()->destroy();
-        return redirect()->to(base_url('auth'));
+        return redirect()->to(base_url('auth'))->with('success', 'Anda telah berhasil logout');
+    }
+
+    private function redirectBasedOnRole($roleId)
+    {
+        switch ($roleId) {
+            case 1: return redirect()->to(base_url('admin/dashboard'));
+            case 2: return redirect()->to(base_url('loket/dashboard'));
+            case 3: return redirect()->to(base_url('dokter/dashboard'));
+            case 4: return redirect()->to(base_url('laboratorium/dashboard'));
+            case 5: return redirect()->to(base_url('admin-lab/dashboard'));
+            case 6: return redirect()->to(base_url('radiologi/dashboard'));
+            case 7: return redirect()->to(base_url('admin-rad/dashboard'));
+            default: return redirect()->to(base_url('auth'))->with('error', 'Role tidak valid');
+        }
     }
 }
