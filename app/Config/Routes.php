@@ -5,12 +5,13 @@ use CodeIgniter\Router\RouteCollection;
  * @var RouteCollection $routes
  */
 
-// Default redirect ke login
-$routes->get('/', 'Auth::index');
+// Default route
+$routes->get('/', 'Auth::login');
 
-// Routes untuk auth
+
+// Auth routes
 $routes->group('auth', function($routes) {
-    $routes->get('', 'Auth::index');
+    $routes->get('login', 'Auth::login');
     $routes->post('login', 'Auth::login');
     $routes->get('register', 'Auth::register');
     $routes->post('register', 'Auth::register');

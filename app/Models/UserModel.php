@@ -6,10 +6,23 @@ use CodeIgniter\Model;
 
 class UserModel extends Model
 {
-    protected $table = 'user';
+    protected $table = 'users';
     protected $primaryKey = 'id';
-    protected $useAutoIncrement = true;
-    protected $returnType = 'array';
-    protected $allowedFields = ['username', 'password', 'email', 'role_id', 'nama_lengkap'];
-    protected $useTimestamps = true;
+    
+    protected $allowedFields = [
+        'nama_lengkap',
+        'username',
+        'password',
+        'email',
+        'role_id',
+        'last_login'
+    ];
+
+    protected $validationRules = [
+        'nama_lengkap' => 'required',
+        'username' => 'required|min_length[4]|is_unique[users.username,id,{id}]',
+        'password' => 'required|min_length[6]',
+        'email' => 'required|valid_email|is_unique[users.email,id,{id}]',
+        'role_id' => 'required|numeric'
+    ];
 }

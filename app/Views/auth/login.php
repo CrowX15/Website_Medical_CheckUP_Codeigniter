@@ -93,7 +93,7 @@
                                                 </div>
                                             </form>
                                             <div class="text-center mt-3">
-                                            <a class="small" href="<?= base_url('auth/register') ?>">Need an Account?</a>
+                                                <a class="small" href="<?= base_url('auth/register') ?>">Need an Account?</a>
                                             </div>
                                         </div>
                                     </div>

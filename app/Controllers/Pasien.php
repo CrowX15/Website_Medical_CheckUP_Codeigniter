@@ -15,6 +15,10 @@ class Pasien extends BaseController
 
     public function index()
     {
+        // Cek akses
+        if (!hasMenuAccess('pasien', 'view')) {
+            return redirect()->back()->with('error', 'Anda tidak memiliki akses ke menu ini');
+        }
         $data['title'] = 'Data Pasien';
         $data['pasien'] = $this->pasienModel->getPasien();
         return view('pasien/index', $data);
@@ -34,7 +38,13 @@ class Pasien extends BaseController
 
     public function create()
     {
-        $data['title'] = 'Tambah Data Pasien';
+        if (!hasMenuAccess('pasien', 'create')) {
+            return redirect()->back()->with('error', 'Anda tidak memiliki akses untuk menambah data');
+        }
+        $data = [
+            'title' => 'Tambah Data Pasien',
+            'validation' => \Config\Services::validation()
+        ];
         
         if ($this->request->getMethod() === 'post') {
             $rules = [
