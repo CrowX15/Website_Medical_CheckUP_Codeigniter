@@ -25,6 +25,7 @@ class Auth extends BaseController
         
         return view('auth/login');
     }
+    
 
     public function login()
     {
@@ -32,14 +33,19 @@ class Auth extends BaseController
         if (session()->get('logged_in')) {
             return $this->redirectBasedOnRole(session()->get('role_id'));
         }
-    
+
         if ($this->request->getMethod() === 'post') {
             $username = $this->request->getPost('username');
             $password = $this->request->getPost('password');
-            
+
+            // Validasi input
+            if (empty($username) || empty($password)) {
+                return redirect()->back()->with('error', 'Username dan password tidak boleh kosong');
+            }
+
             $userModel = new UserModel();
             $user = $userModel->where('username', $username)->first();
-            
+
             if ($user && password_verify($password, $user['password'])) {
                 // Set session
                 $sessionData = [
@@ -50,16 +56,19 @@ class Auth extends BaseController
                     'logged_in' => TRUE
                 ];
                 session()->set($sessionData);
-                
+
                 // Redirect berdasarkan role
                 return $this->redirectBasedOnRole($user['role_id']);
             }
-            
+
+
+            // Hindari memberitahu pengguna apakah username atau password salah
             return redirect()->back()->with('error', 'Username atau password salah');
         }
-        
+
         return view('auth/login');
     }
+
     
     private function redirectBasedOnRole($role_id)
     {
@@ -92,10 +101,10 @@ class Auth extends BaseController
             // Atur rules validasi
             $rules = [
                 'nama_lengkap' => 'required',
-                'username' => 'required|min_length[4]|is_unique[users.username]',
+                'username' => 'required|min_length[4]|is_unique[user.username]',
                 'password' => 'required|min_length[6]',
                 'confirm_password' => 'required|matches[password]',
-                'email' => 'required|valid_email|is_unique[users.email]',
+                'email' => 'required|valid_email|is_unique[user.email]',
                 'role_id' => 'required'
             ];
     
@@ -133,6 +142,9 @@ class Auth extends BaseController
         session()->destroy();
         return redirect()->to('/login');
     }
+
+
+    
 
    
 }

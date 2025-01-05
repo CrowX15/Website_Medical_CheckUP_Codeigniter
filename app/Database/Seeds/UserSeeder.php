@@ -14,11 +14,18 @@ class UserSeeder extends Seeder
                 'password' => password_hash('admin123', PASSWORD_DEFAULT),
                 'email' => 'farezadavarabbani@gmail.com',
                 'role_id' => 1, // admin_sirs
-                'last_login' => date('Y-m-d H:i:s')
-            ]
+                'last_login' => date('Y-m-d H:i:s'),
+                'created_at' => date('Y-m-d H:i:s'), // Tambahkan created_at
+                'updated_at' => date('Y-m-d H:i:s'), // Tambahkan updated_at
+            ],
+            // Tambahkan lebih banyak pengguna jika perlu
         ];
 
         // Using Query Builder
-        $this->db->table('user')->insertBatch($data);
+        if ($this->db->table('user')->insertBatch($data)) {
+            echo "Data berhasil ditambahkan.\n";
+        } else {
+            echo "Terjadi kesalahan saat menambahkan data.\n";
+        }
     }
 }

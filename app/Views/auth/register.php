@@ -76,7 +76,6 @@
 
                                     <form action="<?= base_url('auth/register') ?>" method="POST">
                                         <?= csrf_field() ?>
-                                                                            
                                         <div class="form-group">
                                             <input type="text" name="nama_lengkap" class="form-control" placeholder="Nama Lengkap" value="<?= old('nama_lengkap') ?>">
                                         </div>

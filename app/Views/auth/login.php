@@ -63,35 +63,36 @@
                                     </div>
                                     <div class="row justify-content-center">
                                         <div class="col-12">
-                                            <form class="user" action="<?= base_url('auth/login') ?>" method="POST">
-                                                <?= csrf_field() ?>
+                                        <form class="user" action="<?= base_url('auth/login') ?>" method="POST">
+                                            <?= csrf_field() ?>
+                                            
+                                            <?php if(session()->getFlashdata('error')) : ?>
+                                                <div class="alert alert-danger">
+                                                    <?= session()->getFlashdata('error') ?>
+                                                </div>
+                                            <?php endif; ?>
+                                            
+                                            <div class="form-group">
+                                                <input type="text" 
+                                                       class="form-control form-control-user" 
+                                                       name="username" 
+                                                       placeholder="Username..."
+                                                       required>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="password" 
+                                                       class="form-control form-control-user" 
+                                                       name="password" 
+                                                       placeholder="Password..."
+                                                       required>
+                                            </div>
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-primary btn-user btn-block">
+                                                    Masuk Yuk!
+                                                </button>
+                                            </div>
+                                        </form>
 
-                                                <?php if(session()->getFlashdata('error')) : ?>
-                                                    <div class="alert alert-danger">
-                                                        <?= session()->getFlashdata('error') ?>
-                                                    </div>
-                                                <?php endif; ?>
-                                                
-                                                <div class="form-group">
-                                                    <input type="text" 
-                                                           class="form-control form-control-user" 
-                                                           name="username" 
-                                                           placeholder="Username dong..."
-                                                           required>
-                                                </div>
-                                                <div class="form-group">
-                                                    <input type="password" 
-                                                           class="form-control form-control-user" 
-                                                           name="password" 
-                                                           placeholder="Password..."
-                                                           required>
-                                                </div>
-                                                <div class="form-group">
-                                                    <button type="submit" class="btn btn-primary btn-user btn-block">
-                                                        Masuk Yuk!
-                                                    </button>
-                                                </div>
-                                            </form>
                                             <div class="text-center mt-3">
                                                 <a class="small" href="<?= base_url('auth/register') ?>">Need an Account?</a>
                                             </div>

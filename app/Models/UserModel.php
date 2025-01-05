@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class UserModel extends Model
 {
-    protected $table = 'users';
+    protected $table = 'user';
     protected $primaryKey = 'id';
     
     protected $allowedFields = [
@@ -20,9 +20,9 @@ class UserModel extends Model
 
     protected $validationRules = [
         'nama_lengkap' => 'required',
-        'username' => 'required|min_length[4]|is_unique[users.username,id,{id}]',
+        'username' => 'required|min_length[4]|is_unique[user.username,id,{id}]',
         'password' => 'required|min_length[6]',
-        'email' => 'required|valid_email|is_unique[users.email,id,{id}]',
+        'email' => 'required|valid_email|is_unique[user.email,id,{id}]',
         'role_id' => 'required|numeric'
     ];
 }

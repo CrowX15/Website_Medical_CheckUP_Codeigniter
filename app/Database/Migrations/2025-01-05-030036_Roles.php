@@ -41,6 +41,7 @@ class Roles extends Migration
         // Tambahkan data default roles
         $seeder = \Config\Database::seeder();
         $seeder->call('RoleSeeder');
+
     }
 
     public function down()

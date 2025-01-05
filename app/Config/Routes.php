@@ -9,6 +9,7 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'Auth::login');
 
 
+
 // Auth routes
 $routes->group('auth', function($routes) {
     $routes->get('login', 'Auth::login');
@@ -24,8 +25,8 @@ $routes->group('', ['filter' => 'auth'], function($routes) {
     
     // 1. Admin SIRS (role_id = 1)
     $routes->group('admin', ['filter' => 'role:1'], function($routes) {
-        $routes->get('dashboard', 'Admin::dashboard');
-        $routes->get('users', 'Admin::users');
+        $routes->get('admin/dashboard', 'Admin::dashboard');
+        $routes->get('user', 'Admin::user');
         
         // CRUD Pasien
         $routes->get('pasien', 'Admin::pasien');

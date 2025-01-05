@@ -14,7 +14,7 @@ function getMenuAccess()
             'radiologi' => ['view', 'create', 'edit', 'delete'],
             'pemeriksaan' => ['view', 'create', 'edit', 'delete'],
             'kesimpulan' => ['view', 'create', 'edit', 'delete'],
-            'users' => ['view', 'create', 'edit', 'delete']
+            'user' => ['view', 'create', 'edit', 'delete']
         ],
         // Loket (role_id = 2)
         2 => [
