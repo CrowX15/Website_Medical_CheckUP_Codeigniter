@@ -24,17 +24,6 @@ class Pasien extends BaseController
         return view('pasien/index', $data);
     }
 
-    public function detail($no_rm)
-    {
-        $data['title'] = 'Detail Pasien';
-        $data['pasien'] = $this->pasienModel->getPasien($no_rm);
-        
-        if (empty($data['pasien'])) {
-            throw new \CodeIgniter\Exceptions\PageNotFoundException('Data pasien tidak ditemukan');
-        }
-        
-        return view('pasien/detail', $data);
-    }
 
     public function create()
     {
@@ -79,17 +68,17 @@ class Pasien extends BaseController
     {
         $data['title'] = 'Edit Data Pasien';
         $data['pasien'] = $this->pasienModel->getPasien($no_rm);
-        
+    
         if (empty($data['pasien'])) {
             throw new \CodeIgniter\Exceptions\PageNotFoundException('Data pasien tidak ditemukan');
         }
-
+    
         if ($this->request->getMethod() === 'post') {
             $rules = [
                 'nama' => 'required',
                 'nik' => 'permit_empty|numeric|min_length[16]|max_length[16]'
             ];
-
+    
             if ($this->validate($rules)) {
                 $this->pasienModel->save([
                     'no_rm' => $no_rm,
@@ -101,17 +90,18 @@ class Pasien extends BaseController
                     'usia' => $this->request->getPost('usia'),
                     'tgl_mcu' => $this->request->getPost('tgl_mcu')
                 ]);
-
+    
                 session()->setFlashdata('success', 'Data berhasil diupdate');
                 return redirect()->to('/pasien');
             }
-            
-            $data['validation'] = $this->validator;
+    
+            $data['validation'] = $this->validator; // Kirim objek validasi ke view
         }
-
+    
         return view('pasien/edit', $data);
     }
-
+    
+    
     public function delete($no_rm)
     {
         if ($this->pasienModel->delete($no_rm)) {

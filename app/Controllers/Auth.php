@@ -3,148 +3,174 @@
 namespace App\Controllers;
 
 use App\Models\UserModel;
-use App\Models\RoleModel;
 
 class Auth extends BaseController
 {
     protected $userModel;
-    protected $roleModel;
+    protected $session;
     
     public function __construct()
     {
         $this->userModel = new UserModel();
-        $this->roleModel = new RoleModel();
+        $this->session = session();
     }
 
     public function index()
     {
         // Jika sudah login, redirect ke dashboard sesuai role
-        if (session()->get('logged_in')) {
-            return $this->redirectBasedOnRole(session()->get('role_id'));
+        if ($this->session->has('logged_in')) {
+            return $this->redirectToDashboard();
         }
         
-        return view('auth/login');
+        return view('auth/login', [
+            'title' => 'Login - Medical Checkup'
+        ]);
     }
-    
 
     public function login()
     {
-        // Jika sudah login, redirect ke dashboard
-        if (session()->get('logged_in')) {
-            return $this->redirectBasedOnRole(session()->get('role_id'));
+        if (!$this->validate([
+            'username' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Username harus diisi'
+                ]
+            ],
+            'password' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Password harus diisi'
+                ]
+            ]
+        ])) {
+            return redirect()->back()->withInput();
         }
 
-        if ($this->request->getMethod() === 'post') {
-            $username = $this->request->getPost('username');
-            $password = $this->request->getPost('password');
+        $username = $this->request->getPost('username');
+        $password = $this->request->getPost('password');
 
-            // Validasi input
-            if (empty($username) || empty($password)) {
-                return redirect()->back()->with('error', 'Username dan password tidak boleh kosong');
-            }
+        $user = $this->userModel->where('username', $username)->first();
 
-            $userModel = new UserModel();
-            $user = $userModel->where('username', $username)->first();
-
-            if ($user && password_verify($password, $user['password'])) {
-                // Set session
+        if ($user) {
+            if (password_verify($password, $user['password'])) {
                 $sessionData = [
                     'user_id' => $user['id'],
                     'username' => $user['username'],
-                    'role_id' => $user['role_id'],
                     'nama_lengkap' => $user['nama_lengkap'],
-                    'logged_in' => TRUE
+                    'role_id' => $user['role_id'],
+                    'logged_in' => true
                 ];
-                session()->set($sessionData);
 
-                // Redirect berdasarkan role
-                return $this->redirectBasedOnRole($user['role_id']);
+                $this->session->set($sessionData);
+                return $this->redirectToDashboard();
+            } else {
+                $this->session->setFlashdata('error', 'Password salah');
+                return redirect()->back()->withInput();
             }
-
-
-            // Hindari memberitahu pengguna apakah username atau password salah
-            return redirect()->back()->with('error', 'Username atau password salah');
-        }
-
-        return view('auth/login');
-    }
-
-    
-    private function redirectBasedOnRole($role_id)
-    {
-        switch ($role_id) {
-            case 1: return redirect()->to('admin/dashboard');
-            case 2: return redirect()->to('loket/dashboard');
-            case 3: return redirect()->to('dokter/dashboard');
-            case 4: return redirect()->to('laboratorium/dashboard');
-            case 5: return redirect()->to('admin-lab/dashboard');
-            case 6: return redirect()->to('radiologi/dashboard');
-            case 7: return redirect()->to('admin-rad/dashboard');
-            default: return redirect()->to('auth/login')->with('error', 'Role tidak valid');
+        } else {
+            $this->session->setFlashdata('error', 'Username tidak ditemukan');
+            return redirect()->back()->withInput();
         }
     }
-    
-    
+
     public function register()
     {
-        // Jika sudah login, redirect ke dashboard
-        if (session()->get('logged_in')) {
-            return $this->redirectBasedOnRole(session()->get('role_id'));
-        }
-    
-        $data = [
-            'title' => 'Register',
-            'roles' => $this->roleModel->findAll()
-        ];
-    
-        if ($this->request->getMethod() === 'post') {
-            // Atur rules validasi
-            $rules = [
-                'nama_lengkap' => 'required',
-                'username' => 'required|min_length[4]|is_unique[user.username]',
-                'password' => 'required|min_length[6]',
-                'confirm_password' => 'required|matches[password]',
-                'email' => 'required|valid_email|is_unique[user.email]',
-                'role_id' => 'required'
-            ];
-    
-            if ($this->validate($rules)) {
-                $userData = [
-                    'nama_lengkap' => $this->request->getPost('nama_lengkap'),
-                    'username' => $this->request->getPost('username'),
-                    'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
-                    'email' => $this->request->getPost('email'),
-                    'role_id' => $this->request->getPost('role_id'),
-                    'last_login' => date('Y-m-d H:i:s')
-                ];
-    
-                try {
-                    $this->userModel->insert($userData);
-                    session()->setFlashdata('success', 'Registrasi berhasil! Silakan login.');
-                    return redirect()->to('auth/login');
-                } catch (\Exception $e) {
-                    session()->setFlashdata('error', 'Gagal melakukan registrasi');
-                    return redirect()->back()->withInput();
-                }
-            } else {
-                $data['validation'] = $this->validator;
-            }
-        }
-    
-        return view('auth/register', $data);
-    }
-    
 
-    
+        $roleModel = new \App\Models\RoleModel(); // Pastikan model role tersedia
+        $roles = $roleModel->findAll();
+
+        if ($this->request->getMethod() === 'post') {
+            if (!$this->validate([
+                'nama_lengkap' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => 'Nama_lengkap harus diisi'
+                    ]
+                ],
+                'username' => [
+                    'rules' => 'required|is_unique[user.username]',
+                    'errors' => [
+                        'required' => 'Username harus diisi',
+                        'is_unique' => 'Username sudah digunakan'
+                    ]
+                ],
+                'email' => [
+                    'rules' => 'required|valid_email|is_unique[users.email]',
+                    'errors' => [
+                        'required' => 'Email harus diisi',
+                        'valid_email' => 'Format email tidak valid',
+                        'is_unique' => 'Email sudah digunakan'
+                    ]
+                ],
+                'password' => [
+                    'rules' => 'required|min_length[6]',
+                    'errors' => [
+                        'required' => 'Password harus diisi',
+                        'min_length' => 'Password minimal 6 karakter'
+                    ]
+                ],
+                'confirm_password' => [
+                    'rules' => 'required|matches[password]',
+                    'errors' => [
+                        'required' => 'Konfirmasi password harus diisi',
+                        'matches' => 'Konfirmasi password tidak cocok'
+                    ]
+                ],
+                'role_id' => [
+                    'rules' => 'required|integer',
+                    'errors' => [
+                        'required' => 'Role harus dipilih',
+                        'integer' => 'Role tidak valid'
+                    ]
+                ]
+            ])) {
+                return redirect()->back()->withInput();
+            }
+
+            $data = [
+                'nama' => $this->request->getPost('nama'),
+                'username' => $this->request->getPost('username'),
+                'email' => $this->request->getPost('email'),
+                'password' => $this->request->getPost('password'), // Sudah di-hash oleh Model
+                'role_id' => $this->request->getPost('role_id'),
+            ];
+
+            $this->userModel->insert($data);
+            $this->session->setFlashdata('success', 'Registrasi berhasil, silahkan login');
+            return redirect()->to('/login');
+        }
+
+        return view('auth/register', [
+            'title' => 'Register - Medical Checkup',
+            'roles' => $roles 
+        ]);
+    }
 
     public function logout()
     {
-        session()->destroy();
+        $this->session->destroy();
         return redirect()->to('/login');
     }
 
-
-    
-
-   
+    private function redirectToDashboard()
+    {
+        switch ($this->session->get('role_id')) {
+            case 1:
+                return redirect()->to('admin/dashboard');
+            case 2:
+                return redirect()->to('loket/dashboard');
+            case 3:
+                return redirect()->to('dokter/dashboard');
+            case 4:
+                return redirect()->to('laboratorium/dashboard');
+            case 5:
+                return redirect()->to('admin-lab/dashboard');
+            case 6:
+                return redirect()->to('radiologi/dashboard');
+            case 7:
+                return redirect()->to('admin-rad/dashboard');
+            default:
+                return redirect()->to('login');
+        }
+    }
 }

@@ -8,21 +8,19 @@ class UserModel extends Model
 {
     protected $table = 'user';
     protected $primaryKey = 'id';
-    
-    protected $allowedFields = [
-        'nama_lengkap',
-        'username',
-        'password',
-        'email',
-        'role_id',
-        'last_login'
-    ];
+    protected $useTimestamps = true;
+    protected $allowedFields = ['nama', 'username', 'email', 'password', 'role_id'];
 
-    protected $validationRules = [
-        'nama_lengkap' => 'required',
-        'username' => 'required|min_length[4]|is_unique[user.username,id,{id}]',
-        'password' => 'required|min_length[6]',
-        'email' => 'required|valid_email|is_unique[user.email,id,{id}]',
-        'role_id' => 'required|numeric'
-    ];
+    
+    protected $beforeInsert = ['hashPassword'];
+    protected $beforeUpdate = ['hashPassword'];
+    
+    protected function hashPassword(array $data)
+    {
+        if (isset($data['data']['password'])) {
+            $data['data']['password'] = password_hash($data['data']['password'], PASSWORD_DEFAULT);
+        }
+        
+        return $data;
+    }
 }

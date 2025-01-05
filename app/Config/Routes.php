@@ -1,107 +1,127 @@
 <?php
+
+namespace Config;
 use CodeIgniter\Router\RouteCollection;
 
-/**
- * @var RouteCollection $routes
+// Create a new instance of our RouteCollection class.
+$routes = Services::routes();
+
+/*
+ * --------------------------------------------------------------------
+ * Router Setup
+ * --------------------------------------------------------------------
  */
+$routes->setDefaultNamespace('App\Controllers');
+$routes->setDefaultController('Auth');
+$routes->setDefaultMethod('index');
+$routes->setTranslateURIDashes(false);
+$routes->setAutoRoute(false);
 
-// Default route
-$routes->get('/', 'Auth::login');
+// Rute untuk Auth
+$routes->get('/', 'Auth::index');
+$routes->get('login', 'Auth::index');
+$routes->post('auth/login', 'Auth::login');
+$routes->get('auth/register', 'Auth::register');
+$routes->post('auth/register', 'Auth::register');
+$routes->get('logout', 'Auth::logout');
 
-
-
-// Auth routes
-$routes->group('auth', function($routes) {
-    $routes->get('login', 'Auth::login');
-    $routes->post('login', 'Auth::login');
-    $routes->get('register', 'Auth::register');
-    $routes->post('register', 'Auth::register');
-    $routes->get('logout', 'Auth::logout');
-});
-
-
-// Routes yang membutuhkan authentication
+// Rute yang membutuhkan autentikasi
 $routes->group('', ['filter' => 'auth'], function($routes) {
     
-    // 1. Admin SIRS (role_id = 1)
-    $routes->group('admin', ['filter' => 'role:1'], function($routes) {
-        $routes->get('admin/dashboard', 'Admin::dashboard');
-        $routes->get('user', 'Admin::user');
-        
-        // CRUD Pasien
-        $routes->get('pasien', 'Admin::pasien');
-        $routes->post('pasien/create', 'Admin::createPasien');
-        $routes->get('pasien/edit/(:num)', 'Admin::editPasien/$1');
-        $routes->put('pasien/update/(:num)', 'Admin::updatePasien/$1');
-        $routes->delete('pasien/delete/(:num)', 'Admin::deletePasien/$1');
-        
-        // CRUD Laboratorium
-        $routes->get('laboratorium', 'Admin::laboratorium');
-        $routes->post('laboratorium/create', 'Admin::createLab');
-        $routes->get('laboratorium/edit/(:num)', 'Admin::editLab/$1');
-        $routes->put('laboratorium/update/(:num)', 'Admin::updateLab/$1');
-        $routes->delete('laboratorium/delete/(:num)', 'Admin::deleteLab/$1');
-        
-        // CRUD Radiologi
-        $routes->get('radiologi', 'Admin::radiologi');
-        $routes->post('radiologi/create', 'Admin::createRadiologi');
-        $routes->get('radiologi/edit/(:num)', 'Admin::editRadiologi/$1');
-        $routes->put('radiologi/update/(:num)', 'Admin::updateRadiologi/$1');
-        $routes->delete('radiologi/delete/(:num)', 'Admin::deleteRadiologi/$1');
+    // Rute Dashboard berdasarkan Role
+    $routes->get('admin/dashboard', 'Admin::dashboard', ['filter' => 'role:1']);
+    $routes->get('loket/dashboard', 'Loket::dashboard', ['filter' => 'role:2']);
+    $routes->get('dokter/dashboard', 'Dokter::dashboard', ['filter' => 'role:3']);
+    $routes->get('laboratorium/dashboard', 'Laboratorium::dashboard', ['filter' => 'role:4']);
+    $routes->get('admin-lab/dashboard', 'AdminLab::dashboard', ['filter' => 'role:5']);
+    $routes->get('radiologi/dashboard', 'Radiologi::dashboard', ['filter' => 'role:6']);
+    $routes->get('admin-rad/dashboard', 'AdminRad::dashboard', ['filter' => 'role:7']);
+
+    // Rute Manajemen Pasien
+    $routes->group('pasien', function($routes) {
+        $routes->get('', 'Pasien::index');
+        $routes->get('create', 'Pasien::create');
+        $routes->post('create', 'Pasien::create');
+        $routes->get('edit/(:segment)', 'Pasien::edit/$1');
+        $routes->post('edit/(:segment)', 'Pasien::edit/$1');
+        $routes->get('delete/(:segment)', 'Pasien::delete/$1');
+        $routes->get('detail/(:segment)', 'Pasien::detail/$1');
     });
 
-    // 2. Loket (role_id = 2)
-    $routes->group('loket', ['filter' => 'role:2'], function($routes) {
-        $routes->get('dashboard', 'Loket::dashboard');
-        $routes->get('pasien', 'Loket::pasien');
-        $routes->post('pasien/create', 'Loket::createPasien');
-        $routes->put('pasien/update/(:num)', 'Loket::updatePasien/$1');
-        $routes->delete('pasien/delete/(:num)', 'Loket::deletePasien/$1');
+    // Rute Pemeriksaan Fisik
+    $routes->group('periksa', function($routes) {
+        $routes->get('', 'Periksa::index');
+        $routes->get('create', 'Periksa::create');
+        $routes->post('create', 'Periksa::create');
+        $routes->get('edit/(:segment)', 'Periksa::edit/$1');
+        $routes->post('edit/(:segment)', 'Periksa::edit/$1');
+        $routes->get('delete/(:segment)', 'Periksa::delete/$1');
     });
 
-    // 3. Dokter (role_id = 3)
-    $routes->group('dokter', ['filter' => 'role:3'], function($routes) {
-        $routes->get('dashboard', 'Dokter::dashboard');
-        $routes->get('pemeriksaan', 'Dokter::pemeriksaan');
-        $routes->post('pemeriksaan/create', 'Dokter::createPemeriksaan');
-        $routes->get('kesimpulan', 'Dokter::kesimpulan');
-        $routes->post('kesimpulan/create', 'Dokter::createKesimpulan');
+    // Rute Laboratorium
+    $routes->group('laboratorium', function($routes) {
+        $routes->get('', 'Laboratorium::index');
+        $routes->get('create', 'Laboratorium::create');
+        $routes->post('create', 'Laboratorium::create');
+        $routes->get('edit/(:segment)', 'Laboratorium::edit/$1');
+        $routes->post('edit/(:segment)', 'Laboratorium::edit/$1');
+        $routes->get('delete/(:segment)', 'Laboratorium::delete/$1');
     });
 
-    // 4. User Laboratorium (role_id = 4)
-    $routes->group('laboratorium', ['filter' => 'role:4'], function($routes) {
-        $routes->get('dashboard', 'Laboratorium::dashboard');
-        $routes->get('hasil', 'Laboratorium::hasil');
-        $routes->post('hasil/create', 'Laboratorium::createHasil');
-        $routes->put('hasil/update/(:num)', 'Laboratorium::updateHasil/$1');
-        $routes->delete('hasil/delete/(:num)', 'Laboratorium::deleteHasil/$1');
+    // Rute Master Lab
+    $routes->group('master-lab', function($routes) {
+        $routes->get('', 'MasterLab::index');
+        $routes->get('create', 'MasterLab::create');
+        $routes->post('create', 'MasterLab::create');
+        $routes->get('edit/(:segment)', 'MasterLab::edit/$1');
+        $routes->post('edit/(:segment)', 'MasterLab::edit/$1');
+        $routes->get('delete/(:segment)', 'MasterLab::delete/$1');
     });
 
-    // 5. Admin Laboratorium (role_id = 5)
-    $routes->group('admin-lab', ['filter' => 'role:5'], function($routes) {
-        $routes->get('dashboard', 'AdminLab::dashboard');
-        $routes->get('master-lab', 'AdminLab::masterLab');
-        $routes->get('hasil-lab', 'AdminLab::hasilLab');
+    // Rute Radiologi
+    $routes->group('radiologi', function($routes) {
+        $routes->get('', 'Radiologi::index');
+        $routes->get('create', 'Radiologi::create');
+        $routes->post('create', 'Radiologi::create');
+        $routes->get('edit/(:segment)', 'Radiologi::edit/$1');
+        $routes->post('edit/(:segment)', 'Radiologi::edit/$1');
+        $routes->get('delete/(:segment)', 'Radiologi::delete/$1');
     });
 
-    // 6. User Radiologi (role_id = 6)
-    $routes->group('radiologi', ['filter' => 'role:6'], function($routes) {
-        $routes->get('dashboard', 'Radiologi::dashboard');
-        $routes->get('hasil', 'Radiologi::hasil');
-        $routes->post('hasil/create', 'Radiologi::createHasil');
-        $routes->put('hasil/update/(:num)', 'Radiologi::updateHasil/$1');
-        $routes->delete('hasil/delete/(:num)', 'Radiologi::deleteHasil/$1');
+    // Rute Master Radiologi
+    $routes->group('master-rad', function($routes) {
+        $routes->get('', 'MasterRad::index');
+        $routes->get('create', 'MasterRad::create');
+        $routes->post('create', 'MasterRad::create');
+        $routes->get('edit/(:segment)', 'MasterRad::edit/$1');
+        $routes->post('edit/(:segment)', 'MasterRad::edit/$1');
+        $routes->get('delete/(:segment)', 'MasterRad::delete/$1');
     });
 
-    // 7. Admin Radiologi (role_id = 7)
-    $routes->group('admin-rad', ['filter' => 'role:7'], function($routes) {
-        $routes->get('dashboard', 'AdminRad::dashboard');
-        $routes->get('master-rad', 'AdminRad::masterRad');
-        $routes->get('hasil-rad', 'AdminRad::hasilRad');
+    // Rute Kesimpulan
+    $routes->group('kesimpulan', function($routes) {
+        $routes->get('', 'Kesimpulan::index');
+        $routes->get('create', 'Kesimpulan::create');
+        $routes->post('create', 'Kesimpulan::create');
+        $routes->get('edit/(:segment)', 'Kesimpulan::edit/$1');
+        $routes->post('edit/(:segment)', 'Kesimpulan::edit/$1');
+        $routes->get('delete/(:segment)', 'Kesimpulan::delete/$1');
     });
 });
 
-// 404 Override
-$routes->set404Override(function() {
-    return view('errors/404');
-});
+/*
+ * --------------------------------------------------------------------
+ * Additional Routing
+ * --------------------------------------------------------------------
+ *
+ * There will often be times that you need additional routing and you
+ * need it to be able to override any defaults in this file. Environment
+ * based routes is one such time. require() additional route files here
+ * to make that happen.
+ *
+ * You will have access to the $routes object within that file without
+ * needing to reload it.
+ */
+if (is_file(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php')) {
+    require APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php';
+}

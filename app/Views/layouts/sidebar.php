@@ -41,7 +41,7 @@
                 Pasien
             </div>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url('admin/pasien') ?>">
+                <a class="nav-link" href="<?= base_url('pasien') ?>">
                     <i class="fas fa-fw fa-users"></i>
                     <span>Data Pasien</span>
                 </a>

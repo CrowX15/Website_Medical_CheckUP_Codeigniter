@@ -4,16 +4,17 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Register </title>
+    <title>Register - Medical Check Up</title>
 
     <!-- Custom fonts -->
-    <link href="<?php echo base_url('tamplate/vendor/fontawesome-free/css/all.min.css'); ?>" rel="stylesheet" type="text/css">
+    <link href="<?= base_url('tamplate/vendor/fontawesome-free/css/all.min.css') ?>" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
     <!-- Custom styles -->
-    <link href="<?php echo base_url('tamplate/css/sb-admin-2.min.css'); ?>" rel="stylesheet">
+    <link href="<?= base_url('tamplate/css/sb-admin-2.min.css') ?>" rel="stylesheet">
 
+    <!-- Custom CSS untuk centering -->
     <style>
         html, body {
             height: 100%;
@@ -35,13 +36,15 @@
             margin: 0 !important;
         }
 
-
-
-        .form-group select.form-control {
-            height: calc(1.5em + .75rem + 2px);
-            padding: .375rem .75rem;
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .card {
+                margin: 10px !important;
+            }
         }
-
     </style>
 </head>
 
@@ -55,67 +58,84 @@
                             <div class="col-lg-6">
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Buat Akun Baru!</h1>
+                                        <h1 class="h4 text-gray-900 mb-4">Buat Akun Baru</h1>
                                     </div>
+                                    <div class="row justify-content-center">
+                                        <div class="col-12">
+                                            <?php if (session()->has('errors')) : ?>
+                                                <div class="alert alert-danger">
+                                                    <ul>
+                                                        <?php foreach (session('errors') as $error) : ?>
+                                                            <li><?= esc($error) ?></li>
+                                                        <?php endforeach ?>
+                                                    </ul>
+                                                </div>
+                                            <?php endif ?>
 
-                                    <?php if(session()->has('error')): ?>
-                                        <div class="alert alert-danger">
-                                            <?php 
-                                            $errors = session('error');
-                                            if(is_array($errors)) {
-                                                foreach($errors as $error) {
-                                                    echo $error . "<br>";
-                                                }
-                                            } else {
-                                                echo $errors;
-                                            }
-                                            ?>
-                                        </div>
-                                    <?php endif; ?>
-                                        
+                                            <form class="user" action="<?= base_url('auth/register') ?>" method="POST">
+                                                <?= csrf_field() ?>
+                                                <div class="form-group">
+                                                    <input type="text" 
+                                                           class="form-control form-control-user" 
+                                                           name="nama" 
+                                                           placeholder="Nama Lengkap"
+                                                           value="<?= old('nama') ?>"
+                                                           required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="text" 
+                                                           class="form-control form-control-user" 
+                                                           name="username" 
+                                                           placeholder="Username"
+                                                           value="<?= old('username') ?>"
+                                                           required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="password" 
+                                                           class="form-control form-control-user" 
+                                                           name="password" 
+                                                           placeholder="Password"
+                                                           required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="password" 
+                                                           class="form-control form-control-user" 
+                                                           name="confirm_password" 
+                                                           placeholder="Konfirmasi Password"
+                                                           required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="email" 
+                                                           class="form-control form-control-user" 
+                                                           name="email" 
+                                                           placeholder="Email"
+                                                           value="<?= old('email') ?>"
+                                                           required>
+                                                </div>
 
-                                    <form action="<?= base_url('auth/register') ?>" method="POST">
-                                        <?= csrf_field() ?>
-                                        <div class="form-group">
-                                            <input type="text" name="nama_lengkap" class="form-control" placeholder="Nama Lengkap" value="<?= old('nama_lengkap') ?>">
+                                                <div class="form-group">
+                                                    <select class="form-control form-control-user" name="role_id" required>
+                                                        <option value="">Pilih Role</option>
+                                                        <?php foreach ($roles as $role): ?>
+                                                            <option value="<?= $role['id'] ?>" <?= old('role_id') == $role['id'] ? 'selected' : '' ?>>
+                                                                <?= $role['name'] ?>
+                                                            </option>
+                                                        <?php endforeach; ?>
+                                                    </select>
+                                                </div>
+
+
+                                                <div class="form-group">
+                                                    <button type="submit" class="btn btn-primary btn-user btn-block">
+                                                        Register
+                                                    </button>
+                                                </div>
+                                            </form>
+                                            <div class="text-center mt-3">
+                                                <a class="small" href="<?= base_url('login') ?>">Already have an account? Login!</a>
+                                            </div>
                                         </div>
-                                                                            
-                                        <div class="form-group">
-                                            <input type="text" name="username" class="form-control" placeholder="Username" value="<?= old('username') ?>">
-                                        </div>
-                                                                            
-                                        <div class="form-group">
-                                            <input type="email" name="email" class="form-control" placeholder="Email" value="<?= old('email') ?>">
-                                        </div>
-                                                                            
-                                        <div class="form-group">
-                                            <input type="password" name="password" class="form-control" placeholder="Password">
-                                        </div>
-                                                                            
-                                        <div class="form-group">
-                                            <input type="password" name="confirm_password" class="form-control" placeholder="Konfirmasi Password">
-                                        </div>
-                                                                            
-                                        <div class="form-group">
-                                            <select name="role_id" class="form-control">
-                                                <option value="">Pilih Role</option>
-                                                <?php foreach($roles as $role): ?>
-                                                    <option value="<?= $role['id'] ?>" <?= old('role_id') == $role['id'] ? 'selected' : '' ?>>
-                                                        <?= $role['name'] ?>
-                                                    </option>
-                                                <?php endforeach; ?>
-                                            </select>
-                                        </div>
-                                                
-                                        <button type="submit" class="btn btn-primary btn-block">Register</button>
-                                    </form>
-                                                                                
-                                                
-                                    <hr>
-                                    <div class="text-center">
-                                        <a class="small" href="<?= base_url('auth/login') ?>">Sudah punya akun? Login!</a>
                                     </div>
-
                                 </div>
                             </div>
                             <div class="col-lg-6 d-none d-lg-block bg-register-image"></div>
@@ -127,9 +147,9 @@
     </div>
 
     <!-- Scripts -->
-    <script src="<?php echo base_url('tamplate/vendor/jquery/jquery.min.js'); ?>"></script>
-    <script src="<?php echo base_url('tamplate/vendor/bootstrap/js/bootstrap.bundle.min.js'); ?>"></script>
-    <script src="<?php echo base_url('tamplate/vendor/jquery-easing/jquery.easing.min.js'); ?>"></script>
-    <script src="<?php echo base_url('tamplate/js/sb-admin-2.min.js'); ?>"></script>
+    <script src="<?= base_url('tamplate/vendor/jquery/jquery.min.js') ?>"></script>
+    <script src="<?= base_url('tamplate/vendor/bootstrap/js/bootstrap.bundle.min.js') ?>"></script>
+    <script src="<?= base_url('tamplate/vendor/jquery-easing/jquery.easing.min.js') ?>"></script>
+    <script src="<?= base_url('tamplate/js/sb-admin-2.min.js') ?>"></script>
 </body>
 </html>
