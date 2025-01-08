@@ -154,23 +154,6 @@ class Auth extends BaseController
 
     private function redirectToDashboard()
     {
-        switch ($this->session->get('role_id')) {
-            case 1:
-                return redirect()->to('admin/dashboard');
-            case 2:
-                return redirect()->to('loket/dashboard');
-            case 3:
-                return redirect()->to('dokter/dashboard');
-            case 4:
-                return redirect()->to('laboratorium/dashboard');
-            case 5:
-                return redirect()->to('admin-lab/dashboard');
-            case 6:
-                return redirect()->to('radiologi/dashboard');
-            case 7:
-                return redirect()->to('admin-rad/dashboard');
-            default:
-                return redirect()->to('login');
-        }
+        return redirect()->to(base_url('dashboard'));
     }
 }

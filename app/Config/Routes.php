@@ -25,13 +25,7 @@ $routes->get('logout', 'Auth::logout');
 $routes->group('', ['filter' => 'auth'], function($routes) {
     
     // Rute Dashboard berdasarkan Role
-    $routes->get('admin/dashboard', 'Admin::dashboard', ['filter' => 'role:1']);
-    $routes->get('loket/dashboard', 'Loket::dashboard', ['filter' => 'role:2']);
-    $routes->get('dokter/dashboard', 'Dokter::dashboard', ['filter' => 'role:3']);
-    $routes->get('laboratorium/dashboard', 'Laboratorium::dashboard', ['filter' => 'role:4']);
-    $routes->get('adminlab/dashboard', 'AdminLab::dashboard', ['filter' => 'role:5']);
-    $routes->get('radiologi/dashboard', 'Radiologi::dashboard', ['filter' => 'role:6']);
-    $routes->get('adminrad/dashboard', 'AdminRad::dashboard', ['filter' => 'role:7']);
+    $routes->get('dashboard', 'Dashboard::index');
 
     // Rute Manajemen Pasien
     $routes->group('pasien', function($routes) {

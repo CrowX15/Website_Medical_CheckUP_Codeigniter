@@ -11,11 +11,14 @@ class Dashboard extends BaseController
             return redirect()->to('/login');
         }
 
+        // Data untuk dashboard
         $data = [
             'title' => 'Dashboard',
-            'nama_user' => session()->get('nama_lengkap') // Ambil dari session
+            'role_id' => session()->get('role_id'),
+            'nama_lengkap' => session()->get('nama_lengkap'),
+            'username' => session()->get('username')
         ];
 
-        return view('dashboard', $data);
+        return view('admin/dashboard', $data);
     }
 }
