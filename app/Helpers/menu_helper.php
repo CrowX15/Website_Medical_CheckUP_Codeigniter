@@ -8,9 +8,9 @@ function getMenuAccess()
         // Admin SIRS (role_id = 1)
         1 => [
             'pasien' => ['view', 'create', 'edit', 'delete'],
-            'master_lab' => ['view', 'create', 'edit', 'delete'],
+            'masterlab' => ['view', 'create', 'edit', 'delete'],
             'laboratorium' => ['view', 'create', 'edit', 'delete'],
-            'master_rad' => ['view', 'create', 'edit', 'delete'],
+            'masterrad' => ['view', 'create', 'edit', 'delete'],
             'radiologi' => ['view', 'create', 'edit', 'delete'],
             'pemeriksaan' => ['view', 'create', 'edit', 'delete'],
             'kesimpulan' => ['view', 'create', 'edit', 'delete'],
@@ -28,21 +28,21 @@ function getMenuAccess()
         // User Lab (role_id = 4)
         4 => [
             'laboratorium' => ['view', 'create', 'edit', 'delete'],
-            'master_lab' => ['view']
+            'masterlab' => ['view']
         ],
         // Admin Lab (role_id = 5)
         5 => [
-            'master_lab' => ['view', 'create', 'edit', 'delete'],
+            'masterlab' => ['view', 'create', 'edit', 'delete'],
             'laboratorium' => ['view']
         ],
         // User Radiologi (role_id = 6)
         6 => [
             'radiologi' => ['view', 'create', 'edit', 'delete'],
-            'master_rad' => ['view']
+            'masterrad' => ['view']
         ],
         // Admin Radiologi (role_id = 7)
         7 => [
-            'master_rad' => ['view', 'create', 'edit', 'delete'],
+            'masterrad' => ['view', 'create', 'edit', 'delete'],
             'radiologi' => ['view']
         ]
     ];

@@ -4,8 +4,8 @@
 <div class="container-fluid">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800"><?= esc($title) ?></h1>
-        <?php if (hasMenuAccess('masterlab', 'create')): ?>
-            <a href="<?= base_url('laboratorium/admin/create') ?>" class="btn btn-primary btn-sm">
+        <?php if (hasMenuAccess('masterrad', 'create')): ?>
+            <a href="<?= base_url('radiologi/admin/create') ?>" class="btn btn-primary btn-sm">
                 <i class="fas fa-plus"></i> Tambah Tipe Pemeriksaan
             </a>
         <?php endif; ?>
@@ -20,7 +20,7 @@
         </div>
     <?php endif; ?>
 
-    <form action="<?= base_url('laboratorium/masterlab') ?>" method="get" class="mb-3">
+    <form action="<?= base_url('radiologi/masterrad') ?>" method="get" class="mb-3">
         <div class="input-group">
             <input type="text" name="keyword" class="form-control" placeholder="Cari tipe pemeriksaan..." value="<?= esc($keyword) ?>">
             <div class="input-group-append">
@@ -28,7 +28,7 @@
                     <i class="fas fa-search"></i>
                 </button>
                 <?php if (!empty($keyword)): ?>
-                    <a href="<?= base_url('laboratorium/masterlab') ?>" class="btn btn-secondary">
+                    <a href="<?= base_url('radiologi/masterrad') ?>" class="btn btn-secondary">
                         <i class="fas fa-times"></i>
                     </a>
                 <?php endif; ?>
@@ -50,17 +50,17 @@
                     <tbody>
                         <?php foreach ($tipe_periksa as $item): ?>
                             <tr>
-                                <td><?= esc($item['id_tipeperiksa_lab']) ?></td>
-                                <td><?= esc($item['tipeperiksa_lab']) ?></td>
+                                <td><?= esc($item['id_tipeperiksa_rad']) ?></td>
+                                <td><?= esc($item['tipeperiksa_rad']) ?></td>
                                 <td>
                                     <div class="btn-group" role="group">
-                                        <?php if (hasMenuAccess('masterlab', 'update')): ?>
-                                            <a href="<?= base_url('laboratorium/masterlab/edit/' . $item['id_tipeperiksa_lab']) ?>" class="btn btn-warning btn-sm">
-                                                <i class="fas fa-edit"></i> Edit    
+                                        <?php if (hasMenuAccess('masterrad', 'update')): ?>
+                                            <a href="<?= base_url('radiologi/masterrad/edit/' . $item['id_tipeperiksa_rad']) ?>" class="btn btn-warning btn-sm">
+                                                <i class="fas fa-edit"></i> Edit
                                             </a>
                                         <?php endif; ?>
-                                        <?php if (hasMenuAccess('masterlab', 'delete')): ?>
-                                            <form action="<?= base_url('laboratorium/masterlab/delete/' . $item['id_tipeperiksa_lab']) ?>" method="post" class="d-inline" onsubmit="return confirm('Yakin hapus data ini?')">
+                                        <?php if (hasMenuAccess('masterrad', 'delete')): ?>
+                                            <form action="<?= base_url('radiologi/masterrad/delete/' . $item['id_tipeperiksa_rad']) ?>" method="post" class="d-inline" onsubmit="return confirm('Yakin hapus data ini?')">
                                                 <?= csrf_field() ?>
                                                 <button type="submit" class="btn btn-danger btn-sm">
                                                     <i class="fas fa-trash"></i> Hapus
@@ -81,7 +81,7 @@
                     <ul class="pagination justify-content-center">
                         <?php for ($page = 1; $page <= $totalPages; $page++): ?>
                             <li class="page-item <?= ($currentPage == $page) ? 'active' : '' ?>">
-                                <a class="page-link" href="<?= base_url('laboratorium/masterlab?keyword=' . esc($keyword) . '&page=' . $page) ?>">
+                                <a class="page-link" href="<?= base_url('radiologi/masterrad?keyword=' . esc($keyword) . '&page=' . $page) ?>">
                                     <?= $page ?>
                                 </a>
                             </li>

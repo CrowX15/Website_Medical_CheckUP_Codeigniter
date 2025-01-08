@@ -21,11 +21,29 @@
         </div>
     <?php endif; ?>
 
+    <!-- Search Form -->
+    <form action="<?= base_url('pasien') ?>" method="get" class="mb-3">
+        <div class="input-group">
+            <input type="text" name="keyword" class="form-control" placeholder="Cari pasien..." 
+                   value="<?= $keyword ?? '' ?>">
+            <div class="input-group-append">
+                <button class="btn btn-primary" type="submit">
+                    <i class="fas fa-search fa-sm"></i>
+                </button>
+                <?php if(!empty($keyword)): ?>
+                    <a href="<?= base_url('pasien') ?>" class="btn btn-secondary">
+                        <i class="fas fa-times"></i>
+                    </a>
+                <?php endif; ?>
+            </div>
+        </div>
+    </form>
+
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-bordered" width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th>No. RM</th>
@@ -42,6 +60,7 @@
                     <tbody>
                         <?php foreach($pasien as $p): ?>
                         <tr>
+                            
                             <td><?= $p['no_rm'] ?></td>
                             <td><?= $p['nama'] ?></td>
                             <td><?= $p['nik'] ?></td>
@@ -50,9 +69,9 @@
                             <td><?= $p['bagian'] ?></td>
                             <td><?= $p['usia'] ?></td>
                             <td><?= date('d/m/Y', strtotime($p['tgl_mcu'])) ?></td>
+
                             <td>
                                 <div class="btn-group" role="group">
-
                                     <?php if(hasMenuAccess('pasien', 'edit')): ?>
                                     <a href="<?= base_url('pasien/edit/'.$p['no_rm']) ?>" 
                                        class="btn btn-warning btn-sm" title="Edit">
@@ -60,7 +79,7 @@
                                     </a>
                                     <?php endif; ?>
                                     <?php if(hasMenuAccess('pasien', 'delete')): ?>
-                                    <form action="<?= base_url('pasien/delete/'.$p['no_rm']) ?>" 
+                                    <form action="= base_url('pasien/delete/'.$p['no_rm']) ?>" 
                                           method="post" class="d-inline" 
                                           onsubmit="return confirm('Yakin hapus data ini?')">
                                         <?= csrf_field() ?>
@@ -77,15 +96,23 @@
                     </tbody>
                 </table>
             </div>
+
+            <!-- Pagination -->
+            <?php if($totalPages > 1): ?>
+            <nav>
+                <ul class="pagination justify-content-center">
+                    <?php for($page = 1; $page <= $totalPages; $page++): ?>
+                        <li class="page-item <?= ($currentPage == $page) ? 'active' : '' ?>">
+                            <a class="page-link" 
+                               href="<?= base_url('pasien?keyword='.$keyword.'&page='.$page) ?>">
+                                <?= $page ?>
+                            </a>
+                        </li>
+                    <?php endfor; ?>
+                </ul>
+            </nav>
+            <?php endif; ?>
         </div>
     </div>
 </div>
-<?= $this->endSection() ?>
-
-<?= $this->section('scripts') ?>
-<script>
-$(document).ready(function() {
-    $('#dataTable').DataTable();
-});
-</script>
 <?= $this->endSection() ?>

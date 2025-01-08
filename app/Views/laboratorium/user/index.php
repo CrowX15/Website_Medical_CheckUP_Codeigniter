@@ -2,90 +2,82 @@
 
 <?= $this->section('content') ?>
 <div class="container-fluid">
-    <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Data Pasien</h1>
-        <?php if(hasMenuAccess('pasien', 'create')): ?>
-        <a href="<?= base_url('pasien/create') ?>" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-            <i class="fas fa-plus fa-sm text-white-50"></i> Tambah Pasien
-        </a>
+        <h1 class="h3 mb-0 text-gray-800"><?= esc($title) ?></h1>
+        <?php if (hasMenuAccess('laboratorium', 'create')): ?>
+            <a href="<?= base_url('laboratorium/create') ?>" class="btn btn-primary btn-sm">
+                <i class="fas fa-plus"></i> Tambah Hasil Laboratorium
+            </a>
         <?php endif; ?>
     </div>
 
-    <?php if(session()->getFlashdata('success')): ?>
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <?php if (session()->getFlashdata('success')): ?>
+        <div class="alert alert-success">
             <?= session()->getFlashdata('success') ?>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
         </div>
     <?php endif; ?>
 
-    <!-- DataTales Example -->
+    <!-- Pencarian -->
+    <form action="<?= base_url('laboratorium') ?>" method="get" class="mb-3">
+        <div class="input-group">
+            <input type="text" name="keyword" class="form-control" placeholder="Cari hasil laboratorium..." value="<?= esc($keyword) ?>">
+            <div class="input-group-append">
+                <button class="btn btn-primary" type="submit">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Tabel Data Hasil Laboratorium -->
     <div class="card shadow mb-4">
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-bordered">
                     <thead>
                         <tr>
                             <th>No. RM</th>
-                            <th>Nama</th>
-                            <th>NIK</th>
-                            <th>Perusahaan</th>
-                            <th>Departemen</th>
-                            <th>Bagian</th>
-                            <th>Usia</th>
-                            <th>Tanggal MCU</th>
+                            <th>Nama Pasien</th>
+                            <th>Tipe Pemeriksaan</th>
+                            <th>Hasil Laboratorium</th>
+                            <th>Biaya</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach($pasien as $p): ?>
-                        <tr>
-                            <td><?= $p['no_rm'] ?></td>
-                            <td><?= $p['nama'] ?></td>
-                            <td><?= $p['nik'] ?></td>
-                            <td><?= $p['perusahaan'] ?></td>
-                            <td><?= $p['departemen'] ?></td>
-                            <td><?= $p['bagian'] ?></td>
-                            <td><?= $p['usia'] ?></td>
-                            <td><?= date('d/m/Y', strtotime($p['tgl_mcu'])) ?></td>
-                            <td>
-                                <div class="btn-group" role="group">
-
-                                    <?php if(hasMenuAccess('pasien', 'edit')): ?>
-                                    <a href="<?= base_url('pasien/edit/'.$p['no_rm']) ?>" 
-                                       class="btn btn-warning btn-sm" title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                    <?php endif; ?>
-                                    <?php if(hasMenuAccess('pasien', 'delete')): ?>
-                                    <form action="<?= base_url('pasien/delete/'.$p['no_rm']) ?>" 
-                                          method="post" class="d-inline" 
-                                          onsubmit="return confirm('Yakin hapus data ini?')">
+                        <?php foreach ($hasil_lab as $item): ?>
+                            <tr>
+                                <td><?= esc($item['no_rm']) ?></td>
+                                <td><?= esc($item['nama']) ?></td>
+                                <td><?= esc($item['tipeperiksa_lab']) ?></td>
+                                <td><?= esc($item['hasil_lab']) ?></td>
+                                <td><?= esc($item['biaya']) ?></td>
+                                <td>
+                                    <a href="<?= base_url('laboratorium/edit/' . $item['no_rm']) ?>" class="btn btn-warning btn-sm">Edit</a>
+                                    <form action="<?= base_url('laboratorium/delete/' . $item['no_rm']) ?>" method="post" class="d-inline" onsubmit="return confirm('Yakin hapus data ini?')">
                                         <?= csrf_field() ?>
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <button type="submit" class="btn btn-danger btn-sm" title="Hapus">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
+                                        <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
                                     </form>
-                                    <?php endif; ?>
-                                </div>
-                            </td>
-                        </tr>
+                                </td>
+                            </tr>
                         <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>
+
+            <!-- Pagination -->
+            <?php if ($totalPages > 1): ?>
+                <nav>
+                    <ul class="pagination justify-content-center">
+                        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                            <li class="page-item <?= ($currentPage == $i) ? 'active' : '' ?>">
+                                <a class="page-link" href="<?= base_url('laboratorium?keyword=' . esc($keyword) . '&page=' . $i) ?>"><?= $i ?></a>
+                            </li>
+                        <?php endfor; ?>
+                    </ul>
+                </nav>
+            <?php endif; ?>
         </div>
     </div>
 </div>
-<?= $this->endSection() ?>
-
-<?= $this->section('scripts') ?>
-<script>
-$(document).ready(function() {
-    $('#dataTable').DataTable();
-});
-</script>
 <?= $this->endSection() ?>

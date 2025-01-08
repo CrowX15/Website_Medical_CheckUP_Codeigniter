@@ -19,8 +19,24 @@ class Pasien extends BaseController
         if (!hasMenuAccess('pasien', 'view')) {
             return redirect()->back()->with('error', 'Anda tidak memiliki akses ke menu ini');
         }
-        $data['title'] = 'Data Pasien';
-        $data['pasien'] = $this->pasienModel->getPasien();
+
+        $keyword = $this->request->getGet('keyword');
+        $page = $this->request->getGet('page') ?? 1;
+        $perPage = 10;
+        $offset = ($page - 1) * $perPage;
+
+        $result = $this->pasienModel->searchPasien($keyword, $perPage, $offset);
+
+        $data = [
+            'title' => 'Data Pasien',
+            'pasien' => $result['results'],
+            'keyword' => $keyword,
+            'total' => $result['total'],
+            'perPage' => $perPage,
+            'currentPage' => $page,
+            'totalPages' => ceil($result['total'] / $perPage)
+        ];
+
         return view('pasien/index', $data);
     }
 
@@ -68,6 +84,7 @@ class Pasien extends BaseController
     {
         $data['title'] = 'Edit Data Pasien';
         $data['pasien'] = $this->pasienModel->getPasien($no_rm);
+        $data['validation'] = \Config\Services::validation();
     
         if (empty($data['pasien'])) {
             throw new \CodeIgniter\Exceptions\PageNotFoundException('Data pasien tidak ditemukan');

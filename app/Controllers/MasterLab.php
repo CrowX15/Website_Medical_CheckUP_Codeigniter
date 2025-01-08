@@ -15,59 +15,129 @@ class MasterLab extends BaseController
 
     public function index()
     {
-        $data['title'] = 'Master Tipe Pemeriksaan Laboratorium';
-        $data['tipe_periksa'] = $this->masterLabModel->getTipePeriksaLab();
-        return view('master_lab/index', $data);
+        // Cek akses
+        if (!hasMenuAccess('masterlab', 'view')) {
+            return redirect()->back()->with('error', 'Anda tidak memiliki akses ke menu ini');
+        }
+        
+        // Ambil keyword pencarian
+        $keyword = $this->request->getGet('keyword');
+        $page = $this->request->getGet('page') ?? 1;
+        $perPage = 10;
+        $offset = ($page - 1) * $perPage;
+
+        $result = $this->masterLabModel->searchTipePeriksaLab($keyword, $perPage, $offset);
+
+        $data = [
+            'title' => 'Master Tipe Pemeriksaan Laboratorium',
+            'tipe_periksa' => $result['results'],
+            'keyword' => $keyword,
+            'total' => $result['total'],
+            'perPage' => $perPage,
+            'currentPage' => $page,
+            'totalPages' => ceil($result['total'] / $perPage)
+        ];
+
+        return view('laboratorium/admin/index', $data);
     }
 
     public function create()
     {
-        $data['title'] = 'Tambah Tipe Pemeriksaan';
+        // Cek akses
+        if (!hasMenuAccess('masterlab', 'create')) {
+            return redirect()->back()->with('error', 'Anda tidak memiliki akses untuk menambah data');
+        }
+
+        $data = [
+            'title' => 'Tambah Tipe Pemeriksaan Laboratorium',
+            'validation' => \Config\Services::validation()
+        ];
 
         if ($this->request->getMethod() === 'post') {
-            if ($this->validate(['tipeperiksa_lab' => 'required'])) {
+            $rules = [
+                'tipeperiksa_lab' => [
+                    'rules' => 'required|is_unique[master_lab.tipeperiksa_lab]',
+                    'errors' => [
+                        'required' => 'Tipe pemeriksaan harus diisi.',
+                        'is_unique' => 'Tipe pemeriksaan sudah ada.'
+                    ]
+                ]
+            ];
+
+            if ($this->validate($rules)) {
                 $this->masterLabModel->save([
                     'tipeperiksa_lab' => $this->request->getPost('tipeperiksa_lab')
                 ]);
 
                 session()->setFlashdata('success', 'Tipe pemeriksaan berhasil ditambahkan');
-                return redirect()->to('/master-lab');
+                return redirect()->to('/laboratorium/masterlab');
             }
-            
+
             $data['validation'] = $this->validator;
         }
 
-        return view('master_lab/create', $data);
+        return view('laboratorium/admin/create', $data);
     }
 
-    public function edit($id)
+    public function edit($id_tipeperiksa_lab)
     {
-        $data['title'] = 'Edit Tipe Pemeriksaan';
-        $data['tipe_periksa'] = $this->masterLabModel->find($id);
+        // Cek akses
+        if (!hasMenuAccess('masterlab', 'update')) {
+            return redirect()->back()->with('error', 'Anda tidak memiliki akses untuk mengubah data');
+        }
+
+        $data = [
+            'title' => 'Edit Tipe Pemeriksaan Laboratorium',
+            'tipe_periksa' => $this->masterLabModel->find($id_tipeperiksa_lab),
+            'validation' => \Config\Services::validation()
+        ];
+
+        if (empty($data['tipe_periksa'])) {
+            throw new \CodeIgniter\Exceptions\PageNotFoundException('Data tidak ditemukan');
+        }
 
         if ($this->request->getMethod() === 'post') {
-            if ($this->validate(['tipeperiksa_lab' => 'required'])) {
-                $this->masterLabModel->update($id, [
+            $rules = [
+                'tipeperiksa_lab' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => 'Tipe pemeriksaan harus diisi.'
+                    ]
+                ]
+            ];
+
+            if ($this->validate($rules)) {
+                $this->masterLabModel->update($id_tipeperiksa_lab, [
                     'tipeperiksa_lab' => $this->request->getPost('tipeperiksa_lab')
                 ]);
 
                 session()->setFlashdata('success', 'Tipe pemeriksaan berhasil diupdate');
-                return redirect()->to('/master-lab');
+                return redirect()->to('/laboratorium/masterlab');
             }
-            
+
             $data['validation'] = $this->validator;
         }
 
-        return view('master_lab/edit', $data);
+        return view('laboratorium/admin/edit', $data);
     }
 
     public function delete($id)
     {
-        if ($this->masterLabModel->delete($id)) {
-            session()->setFlashdata('success', 'Tipe pemeriksaan berhasil dihapus');
-        } else {
-            session()->setFlashdata('error', 'Tipe pemeriksaan gagal dihapus');
+        // Cek akses
+        if (!hasMenuAccess('masterlab', 'delete')) {
+            return redirect()->back()->with('error', 'Anda tidak memiliki akses untuk menghapus data');
         }
-        return redirect()->to('/master-lab');
+
+        try {
+            if ($this->masterLabModel->delete($id)) {
+                session()->setFlashdata('success', 'Tipe pemeriksaan berhasil dihapus');
+            } else {
+                session()->setFlashdata('error', 'Tipe pemeriksaan gagal dihapus');
+            }
+        } catch (\Exception $e) {
+            session()->setFlashdata('error', 'Tidak dapat menghapus tipe pemeriksaan yang sudah digunakan');
+        }
+
+        return redirect()->to('/laboratorium/masterlab');
     }
 }

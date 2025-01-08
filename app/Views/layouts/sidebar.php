@@ -1,6 +1,6 @@
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
     <!-- Sidebar - Brand -->
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?= base_url('dashboard') ?>">
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?= base_url('admin/dashboard') ?>">
         <div class="sidebar-brand-icon">
             <img src="<?= base_url('asset/img/mini_logo_fakultas.png') ?>" alt="Logo Medical" style="width: 50px; height: 50px;">
         </div>
@@ -47,13 +47,13 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url('dokter/pemeriksaan') ?>">
+                <a class="nav-link" href="<?= base_url('periksa') ?>">
                     <i class="fas fa-fw fa-stethoscope"></i>
                     <span>Pemeriksaan Fisik</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url('dokter/kesimpulan') ?>">
+                <a class="nav-link" href="<?= base_url('kesimpulan') ?>">
                     <i class="fas fa-fw fa-file-medical"></i>
                     <span>Kesimpulan Medis</span>
                 </a>
@@ -62,13 +62,13 @@
                 Laboratorium
             </div>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url('laboratorium/hasil') ?>">
+                <a class="nav-link" href="<?= base_url('laboratorium') ?>">
                     <i class="fas fa-fw fa-flask"></i>
                     <span>Hasil Lab</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url('admin-lab/master-lab') ?>">
+                <a class="nav-link" href="<?= base_url('masterlab') ?>">
                     <i class="fas fa-fw fa-cogs"></i>
                     <span>Master Lab</span>
                 </a>
@@ -77,13 +77,13 @@
                 Radiologi
             </div>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url('radiologi/hasil') ?>">
+                <a class="nav-link" href="<?= base_url('radiologi') ?>">
                     <i class="fas fa-fw fa-x-ray"></i>
                     <span>Hasil Radiologi</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url('admin-rad/master-rad') ?>">
+                <a class="nav-link" href="<?= base_url('masterrad') ?>">
                     <i class="fas fa-fw fa-cogs"></i>
                     <span>Master Radiologi</span>
                 </a>
@@ -104,7 +104,7 @@
                 Pasien
             </div>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url('loket/pasien') ?>">
+                <a class="nav-link" href="<?= base_url('pasien') ?>">
                     <i class="fas fa-fw fa-users"></i>
                     <span>Data Pasien</span>
                 </a>
@@ -116,13 +116,13 @@
                 Pasien
             </div>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url('dokter/pemeriksaan') ?>">
+                <a class="nav-link" href="<?= base_url('periksa') ?>">
                     <i class="fas fa-fw fa-stethoscope"></i>
                     <span>Pemeriksaan Fisik</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url('dokter/kesimpulan') ?>">
+                <a class="nav-link" href="<?= base_url('kesimpulan') ?>">
                     <i class="fas fa-fw fa-file-medical"></i>
                     <span>Kesimpulan Medis</span>
                 </a>
@@ -134,13 +134,13 @@
                 Laboratorium
             </div>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url('laboratorium/hasil') ?>">
+                <a class="nav-link" href="<?= base_url('laboratorium') ?>">
                     <i class="fas fa-fw fa-flask"></i>
                     <span>Hasil Lab</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url('admin-lab/master-lab') ?>">
+                <a class="nav-link" href="<?= base_url('masterlab') ?>">
                     <i class="fas fa-fw fa-cogs"></i>
                     <span>Master Lab</span>
                 </a>
@@ -152,13 +152,13 @@
                 Laboratorium
             </div>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url('laboratorium/hasil') ?>">
+                <a class="nav-link" href="<?= base_url('laboratorium') ?>">
                     <i class="fas fa-fw fa-flask"></i>
                     <span>Hasil Lab</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url('admin-lab/master-lab') ?>">
+                <a class="nav-link" href="<?= base_url('masterlab') ?>">
                     <i class="fas fa-fw fa-cogs"></i>
                     <span>Master Lab</span>
                 </a>
@@ -170,13 +170,13 @@
                 Radiologi
             </div>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url('radiologi/hasil') ?>">
+                <a class="nav-link" href="<?= base_url('radiologi') ?>">
                     <i class="fas fa-fw fa-x-ray"></i>
                     <span>Hasil Radiologi</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url('admin-rad/master-rad') ?>">
+                <a class="nav-link" href="<?= base_url('masterrad') ?>">
                     <i class="fas fa-fw fa-cogs"></i>
                     <span>Master Radiologi</span>
                 </a>
@@ -188,13 +188,13 @@
                 Radiologi
             </div>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url('radiologi/hasil') ?>">
+                <a class="nav-link" href="<?= base_url('radiologi') ?>">
                     <i class="fas fa-fw fa-x-ray"></i>
                     <span>Hasil Radiologi</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url('admin-rad/master-rad') ?>">
+                <a class="nav-link" href="<?= base_url('masterrad') ?>">
                     <i class="fas fa-fw fa-cogs"></i>
                     <span>Master Radiologi</span>
                 </a>

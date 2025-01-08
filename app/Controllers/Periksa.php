@@ -18,15 +18,43 @@ class Periksa extends BaseController
 
     public function index()
     {
-        $data['title'] = 'Data Pemeriksaan Fisik';
-        $data['periksa'] = $this->periksaModel->getHasilPeriksa();
+        // Cek akses
+        if (!hasMenuAccess('pemeriksaan', 'view')) {
+            return redirect()->back()->with('error', 'Anda tidak memiliki akses ke menu ini');
+        }
+
+        $keyword = $this->request->getGet('keyword');
+        $page = $this->request->getGet('page') ?? 1;
+        $perPage = 10;
+        $offset = ($page - 1) * $perPage;
+
+        $result = $this->periksaModel->searchHasilPeriksa($keyword, $perPage, $offset);
+
+        $data = [
+            'title' => 'Data Pemeriksaan Fisik',
+            'periksa' => $result['results'],
+            'keyword' => $keyword,
+            'total' => $result['total'],
+            'perPage' => $perPage,
+            'currentPage' => $page,
+            'totalPages' => ceil($result['total'] / $perPage)
+        ];
+
         return view('periksa/index', $data);
     }
 
     public function create()
     {
-        $data['title'] = 'Tambah Pemeriksaan Fisik';
-        $data['pasien'] = $this->pasienModel->getPasien();
+        // Cek akses
+        if (!hasMenuAccess('pemeriksaan', 'create')) {
+            return redirect()->back()->with('error', 'Anda tidak memiliki akses untuk menambah data');
+        }
+
+        $data = [
+            'title' => 'Tambah Pemeriksaan Fisik',
+            'validation' => \Config\Services::validation(),
+            'pasien' => $this->pasienModel->getPasien() // Mendapatkan semua pasien
+        ];
 
         if ($this->request->getMethod() === 'post') {
             $rules = [
@@ -58,7 +86,7 @@ class Periksa extends BaseController
                 session()->setFlashdata('success', 'Data pemeriksaan fisik berhasil ditambahkan');
                 return redirect()->to('/periksa');
             }
-            
+
             $data['validation'] = $this->validator;
         }
 
@@ -67,9 +95,18 @@ class Periksa extends BaseController
 
     public function edit($no_rm)
     {
+        // Cek akses
+        if (!hasMenuAccess('pemeriksaan', 'edit')) {
+            return redirect()->back()->with('error', 'Anda tidak memiliki akses untuk mengedit data');
+        }
+
         $data['title'] = 'Edit Pemeriksaan Fisik';
         $data['periksa'] = $this->periksaModel->getHasilPeriksa($no_rm);
-        $data['pasien'] = $this->pasienModel->getPasien($no_rm);
+        $data['pasien'] = $this->pasienModel->getPasien(); // Mendapatkan semua pasien
+
+        if (empty($data['periksa'])) {
+            throw new \CodeIgniter\Exceptions\PageNotFoundException('Data pemeriksaan tidak ditemukan');
+        }
 
         if ($this->request->getMethod() === 'post') {
             $rules = [
@@ -100,8 +137,8 @@ class Periksa extends BaseController
                 session()->setFlashdata('success', 'Data pemeriksaan fisik berhasil diupdate');
                 return redirect()->to('/periksa');
             }
-            
-            $data['validation'] = $this->validator;
+
+            $data['validation'] = $this->validator; // Kirim objek validasi ke view
         }
 
         return view('periksa/edit', $data);

@@ -18,4 +18,26 @@ class PasienModel extends Model
         }
         return $this->where(['no_rm' => $no_rm])->first();
     }
+
+    // Tambahkan method untuk pencarian dan pagination
+    public function searchPasien($keyword = null, $limit = 10, $offset = 0)
+    {
+        $builder = $this->builder();
+
+        if ($keyword) {
+            $builder->groupStart()
+                    ->like('no_rm', $keyword)
+                    ->orLike('nama', $keyword)
+                    ->orLike('nik', $keyword)
+                    ->orLike('perusahaan', $keyword)
+                    ->orLike('departemen', $keyword)
+                    ->orLike('bagian', $keyword)
+                    ->groupEnd();
+        }
+
+        return [
+            'results' => $builder->limit($limit, $offset)->get()->getResultArray(),
+            'total' => $builder->countAllResults()
+        ];
+    }
 }
