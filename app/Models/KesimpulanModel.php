@@ -9,7 +9,7 @@ class KesimpulanModel extends Model
     protected $table = 'kesimpulan';
     protected $primaryKey = 'no_rm'; // Dihapus jika no_rm bukan primary key
     protected $allowedFields = [
-        'no_rm', 'pemeriksaan_fisik', 'thorax', 'laboratorium',
+        'pemeriksaan_fisik', 'thorax', 'laboratorium',
         'saran', 'imt', 'tatalaksana'
     ];
     protected $useTimestamps = true;
@@ -47,6 +47,7 @@ class KesimpulanModel extends Model
         if ($keyword) {
             $builder->groupStart()
                     ->like('pasien.nama', $keyword)
+                    ->orLike('kesimpulan.no_rm', $keyword)
                     ->orLike('pemeriksaan_fisik', $keyword)
                     ->orLike('thorax', $keyword)
                     ->orLike('laboratorium', $keyword)

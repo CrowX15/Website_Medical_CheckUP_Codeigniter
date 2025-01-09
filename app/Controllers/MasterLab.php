@@ -16,7 +16,7 @@ class MasterLab extends BaseController
     public function index()
     {
         // Cek akses
-        if (!hasMenuAccess('masterlab', 'view')) {
+        if (!hasMenuAccess('MasterLab', 'view')) {
             return redirect()->back()->with('error', 'Anda tidak memiliki akses ke menu ini');
         }
         
@@ -41,10 +41,10 @@ class MasterLab extends BaseController
         return view('laboratorium/admin/index', $data);
     }
 
-    public function create()
+    public function store()
     {
         // Cek akses
-        if (!hasMenuAccess('masterlab', 'create')) {
+        if (!hasMenuAccess('MasterLab', 'create')) {
             return redirect()->back()->with('error', 'Anda tidak memiliki akses untuk menambah data');
         }
 
@@ -70,7 +70,7 @@ class MasterLab extends BaseController
                 ]);
 
                 session()->setFlashdata('success', 'Tipe pemeriksaan berhasil ditambahkan');
-                return redirect()->to('/laboratorium/masterlab');
+                return redirect()->to('/masterlab');
             }
 
             $data['validation'] = $this->validator;
@@ -79,10 +79,10 @@ class MasterLab extends BaseController
         return view('laboratorium/admin/create', $data);
     }
 
-    public function edit($id_tipeperiksa_lab)
+    public function update($id_tipeperiksa_lab)
     {
         // Cek akses
-        if (!hasMenuAccess('masterlab', 'update')) {
+        if (!hasMenuAccess('MasterLab', 'edit')) {
             return redirect()->back()->with('error', 'Anda tidak memiliki akses untuk mengubah data');
         }
 
@@ -112,7 +112,7 @@ class MasterLab extends BaseController
                 ]);
 
                 session()->setFlashdata('success', 'Tipe pemeriksaan berhasil diupdate');
-                return redirect()->to('/laboratorium/masterlab');
+                return redirect()->to('/masterlab');
             }
 
             $data['validation'] = $this->validator;
@@ -121,15 +121,15 @@ class MasterLab extends BaseController
         return view('laboratorium/admin/edit', $data);
     }
 
-    public function delete($id)
+    public function delete($id_tipeperiksa_lab)
     {
         // Cek akses
-        if (!hasMenuAccess('masterlab', 'delete')) {
+        if (!hasMenuAccess('MasterLab', 'delete')) {
             return redirect()->back()->with('error', 'Anda tidak memiliki akses untuk menghapus data');
         }
 
         try {
-            if ($this->masterLabModel->delete($id)) {
+            if ($this->masterLabModel->delete($id_tipeperiksa_lab)) {
                 session()->setFlashdata('success', 'Tipe pemeriksaan berhasil dihapus');
             } else {
                 session()->setFlashdata('error', 'Tipe pemeriksaan gagal dihapus');
@@ -138,6 +138,6 @@ class MasterLab extends BaseController
             session()->setFlashdata('error', 'Tidak dapat menghapus tipe pemeriksaan yang sudah digunakan');
         }
 
-        return redirect()->to('/laboratorium/masterlab');
+        return redirect()->to('/masterlab');
     }
 }

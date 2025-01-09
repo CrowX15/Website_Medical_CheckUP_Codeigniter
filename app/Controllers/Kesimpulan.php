@@ -19,7 +19,7 @@ class Kesimpulan extends BaseController
     public function index()
     {
         // Cek akses
-        if (!hasMenuAccess('kesimpulan', 'view')) {
+        if (!hasMenuAccess('Kesimpulan', 'view')) {
             return redirect()->back()->with('error', 'Anda tidak memiliki akses ke menu ini');
         }
 
@@ -43,10 +43,10 @@ class Kesimpulan extends BaseController
         return view('kesimpulan/index', $data);
     }
 
-    public function create()
+    public function store()
     {
         // Cek akses
-        if (!hasMenuAccess('kesimpulan', 'create')) {
+        if (!hasMenuAccess('Kesimpulan', 'create')) {
             return redirect()->back()->with('error', 'Anda tidak memiliki akses untuk menambah data');
         }
 
@@ -58,11 +58,42 @@ class Kesimpulan extends BaseController
 
         if ($this->request->getMethod() === 'post') {
             $rules = [
-                'no_rm' => 'required',
-                'pemeriksaan_fisik' => 'required',
-                'thorax' => 'required',
-                'laboratorium' => 'required'
-            ];
+                'no_rm' => [
+                    'rules' => 'required|max_length[50]|is_unique[kesimpulan.no_rm]', 
+                    'errors' => [
+                        'required' => 'Nomor Rekam Medis harus diisi',
+                        'max_length' => 'Nomor Rekam Medis maksimal 50 karakter',
+                        'is_unique' => 'Nomor Rekam Medis sudah terdaftar'
+                    ]
+                ],
+                'pemeriksaan_fisik' => [
+                    'rules' => 'required|max_length[255]',
+                    'errors' => [
+                        'required' => 'Pemeriksaan Fisik harus diisi',
+                        'max_length' => 'Pemeriksaan Fisik maksimal 255 karakter'
+                    ]
+                ],
+                'thorax' => [
+                    'rules' => 'required|max_length[255]',
+                    'errors' => [
+                        'required' => 'Thorax harus diisi',
+                        'max_length' => 'Thorax maksimal 255 karakter'
+                    ]
+                ],
+                'laboratorium' => [
+                    'rules' => 'required|max_length[255]',
+                    'errors' => [
+                        'required' => 'Laboratorium harus diisi',
+                        'max_length' => 'Laboratorium maksimal 255 karakter'
+                    ]
+                ],
+                'imt' => [
+                    'rules' => 'permit_empty|max_length[10]',
+                    'errors' => [
+                        'max_length' => 'IMT maksimal 10 karakter'
+                    ]
+                ]
+            ];            
 
             if ($this->validate($rules)) {
                 $this->kesimpulanModel->save([
@@ -85,10 +116,10 @@ class Kesimpulan extends BaseController
         return view('kesimpulan/create', $data);
     }
 
-    public function edit($no_rm)
+    public function update($no_rm)
     {
         // Cek akses
-        if (!hasMenuAccess('kesimpulan', 'edit')) {
+        if (!hasMenuAccess('Kesimpulan', 'edit')) {
             return redirect()->back()->with('error', 'Anda tidak memiliki akses untuk mengedit data');
         }
 
@@ -130,6 +161,11 @@ class Kesimpulan extends BaseController
 
     public function delete($no_rm)
     {
+        // Cek akses
+        if (!hasMenuAccess('Kesimpulan', 'delete')) {
+            return redirect()->back()->with('error', 'Anda tidak memiliki akses untuk mengedit data');
+        }
+        
         if ($this->kesimpulanModel->delete($no_rm)) {
             session()->setFlashdata('success', 'Data kesimpulan berhasil dihapus');
         } else {

@@ -77,9 +77,9 @@
                                                 <div class="form-group">
                                                     <input type="text" 
                                                            class="form-control form-control-user" 
-                                                           name="nama" 
+                                                           name="nama_lengkap" 
                                                            placeholder="Nama Lengkap"
-                                                           value="<?= old('nama') ?>"
+                                                           value="<?= old('nama_lengkap') ?>"
                                                            required>
                                                 </div>
                                                 <div class="form-group">
@@ -114,15 +114,19 @@
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <select class="form-control form-control-user" name="role_id" required>
-                                                        <option value="">Pilih Role</option>
-                                                        <?php foreach ($roles as $role): ?>
-                                                            <option value="<?= $role['id'] ?>" <?= old('role_id') == $role['id'] ? 'selected' : '' ?>>
-                                                                <?= $role['name'] ?>
-                                                            </option>
-                                                        <?php endforeach; ?>
-                                                    </select>
-                                                </div>
+                                                        <select class="form-control form-control-user" name="role_id" required>
+                                                            <option value="">Pilih Role</option>
+                                                            <?php foreach ($roles as $role): ?>
+                                                                <option value="<?= $role['id'] ?>" <?= old('role_id') == $role['id'] ? 'selected' : '' ?>>
+                                                                    <?= $role['name'] ?>
+                                                                </option>
+                                                            <?php endforeach; ?>
+                                                        </select>
+                                                        <?php if (session()->getFlashdata('errors')): ?>
+                                                            <div class="text-danger"><?= session()->getFlashdata('errors')['role_id'] ?? '' ?></div>
+                                                        <?php endif; ?>
+                                                    </div>
+
 
 
                                                 <div class="form-group">

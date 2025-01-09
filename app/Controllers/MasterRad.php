@@ -16,7 +16,7 @@ class MasterRad extends BaseController
     public function index()
     {
         // Cek akses
-        if (!hasMenuAccess('masterrad', 'view')) {
+        if (!hasMenuAccess('MasterRad', 'view')) {
             return redirect()->back()->with('error', 'Anda tidak memiliki akses ke menu ini');
         }
 
@@ -40,10 +40,10 @@ class MasterRad extends BaseController
         return view('radiologi/admin/index', $data);
     }
 
-    public function create()
+    public function store()
     {
         // Cek akses
-        if (!hasMenuAccess('masterrad', 'create')) {
+        if (!hasMenuAccess('MasterRad', 'create')) {
             return redirect()->back()->with('error', 'Anda tidak memiliki akses untuk menambah data');
         }
 
@@ -69,7 +69,7 @@ class MasterRad extends BaseController
                 ]);
 
                 session()->setFlashdata('success', 'Tipe pemeriksaan radiologi berhasil ditambahkan');
-                return redirect()->to('/radiologi/admin');
+                return redirect()->to('/MasteRad');
             }
 
             $data['validation'] = $this->validator;
@@ -78,16 +78,16 @@ class MasterRad extends BaseController
         return view('radiologi/admin/create', $data);
     }
 
-    public function edit($id)
+    public function update($id_tipeperiksa_rad)
     {
         // Cek akses
-        if (!hasMenuAccess('masterrad', 'update')) {
+        if (!hasMenuAccess('MasterRad', 'edit')) {
             return redirect()->back()->with('error', 'Anda tidak memiliki akses untuk mengubah data');
         }
 
         $data = [
             'title' => 'Edit Tipe Pemeriksaan Radiologi',
-            'tipe_periksa' => $this->masterRadModel->find($id),
+            'tipe_periksa' => $this->masterRadModel->find($id_tipeperiksa_rad),
             'validation' => \Config\Services::validation()
         ];
 
@@ -106,12 +106,12 @@ class MasterRad extends BaseController
             ];
 
             if ($this->validate($rules)) {
-                $this->masterRadModel->update($id, [
+                $this->masterRadModel->update($id_tipeperiksa_rad, [
                     'tipeperiksa_rad' => $this->request->getPost('tipeperiksa_rad')
                 ]);
 
                 session()->setFlashdata('success', 'Tipe pemeriksaan radiologi berhasil diupdate');
-                return redirect()->to('/radiologi/admin');
+                return redirect()->to('/MasterRad');
             }
 
             $data['validation'] = $this->validator;
@@ -120,19 +120,19 @@ class MasterRad extends BaseController
         return view('radiologi/admin/edit', $data);
     }
 
-    public function delete($id)
+    public function delete($id_tipeperiksa_rad)
     {
         // Cek akses
-        if (!hasMenuAccess('masterrad', 'delete')) {
+        if (!hasMenuAccess('MasterRad', 'delete')) {
             return redirect()->back()->with('error', 'Anda tidak memiliki akses untuk menghapus data');
         }
 
-        if ($this->masterRadModel->delete($id)) {
+        if ($this->masterRadModel->delete($id_tipeperiksa_rad)) {
             session()->setFlashdata('success', 'Tipe pemeriksaan radiologi berhasil dihapus');
         } else {
             session()->setFlashdata('error', 'Tipe pemeriksaan radiologi gagal dihapus');
         }
 
-        return redirect()->to('/radiologi/admin');
+        return redirect()->to('/MasterRad');
     }
 }

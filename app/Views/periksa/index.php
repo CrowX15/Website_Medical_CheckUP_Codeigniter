@@ -18,8 +18,8 @@
 <div class="container-fluid">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Data Pemeriksaan Fisik</h1>
-        <?php if(hasMenuAccess('pemeriksaan', 'create')): ?>
-        <a href="<?= base_url('periksa/create') ?>" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+        <?php if(hasMenuAccess('Periksa', 'create')): ?>
+        <a href="<?= base_url('Periksa/create') ?>" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
             <i class="fas fa-plus fa-sm text-white-50"></i> Tambah Pemeriksaan
         </a>
         <?php endif; ?>
@@ -34,7 +34,7 @@
         </div>
     <?php endif; ?>
 
-    <form action="<?= base_url('periksa') ?>" method="get" class="mb-3">
+    <form action="<?= base_url('Periksa') ?>" method="get" class="mb-3">
         <div class="input-group">
             <input type="text" name="keyword" class="form-control" placeholder="Cari pemeriksaan..." 
                    value="<?= $keyword ?? '' ?>">
@@ -43,7 +43,7 @@
                     <i class="fas fa-search fa-sm"></i>
                 </button>
                 <?php if(!empty($keyword)): ?>
-                    <a href="<?= base_url('periksa') ?>" class="btn btn-secondary">
+                    <a href="<?= base_url('Periksa') ?>" class="btn btn-secondary">
                         <i class="fas fa-times"></i>
                     </a>
                 <?php endif; ?>
@@ -63,13 +63,13 @@
                     <p class="card-text"><strong>Nadi:</strong> <?= esc($p['nadi']) ?></p>
                     <p class="card-text"><strong>Tekanan Darah:</strong> <?= esc($p['tekanan_darah']) ?></p>
                     <div class="btn-group" role="group">
-                        <a href="<?= base_url('periksa/edit/'.$p['no_rm']) ?>" class="btn btn-warning btn-sm" title="Edit">
+                        <a href="<?= base_url('Periksa/edit/'.$p['no_rm']) ?>" class="btn btn-warning btn-sm" title="Edit">
                             <i class="fas fa-edit"></i>
                         </a>
                         <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#detailModal<?= $p['no_rm'] ?>">
                             Detail
                         </button>
-                        <form action="<?= base_url('periksa/delete/'.$p['no_rm']) ?>" method="post" class="d-inline" onsubmit="return confirm('Yakin hapus data ini?')">
+                        <form action="<?= base_url('Periksa/delete/'.$p['no_rm']) ?>" method="post" class="d-inline" onsubmit="return confirm('Yakin hapus data ini?')">
                             <?= csrf_field() ?>
                             <input type="hidden" name="_method" value="DELETE">
                             <button type="submit" class="btn btn-danger btn-sm" title="Hapus">
@@ -119,7 +119,7 @@
             <?php for($page = 1; $page <= $totalPages; $page++): ?>
                 <li class="page-item <?= ($currentPage == $page) ? 'active' : '' ?>">
                     <a class="page-link" 
-                       href="<?= base_url('periksa?keyword='.$keyword.'&page='.$page) ?>">
+                       href="<?= base_url('Periksa?keyword='.$keyword.'&page='.$page) ?>">
                        <?= $page ?>
                     </a>
                 </li>

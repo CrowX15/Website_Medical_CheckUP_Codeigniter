@@ -4,14 +4,14 @@
 <div class="container-fluid">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Edit Data Pemeriksaan Fisik</h1>
-        <a href="<?= base_url('periksa') ?>" class="btn btn-secondary btn-sm">
+        <a href="<?= base_url('Periksa') ?>" class="btn btn-secondary btn-sm">
             <i class="fas fa-arrow-left"></i> Kembali
         </a>
     </div>
 
     <div class="card shadow mb-4">
         <div class="card-body">
-            <form action="<?= base_url('periksa/edit/' . $periksa['no_rm']) ?>" method="post">
+            <form action="<?= base_url('Periksa/edit/' . $periksa['no_rm']) ?>" method="post">
                 <?= csrf_field() ?>
                 
                 <div class="form-group">

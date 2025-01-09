@@ -22,7 +22,7 @@ class Radiologi extends BaseController
     public function index()
     {
         // Cek akses
-        if (!hasMenuAccess('radiologi', 'view')) {
+        if (!hasMenuAccess('Radiologi', 'view')) {
             return redirect()->back()->with('error', 'Anda tidak memiliki akses ke menu ini');
         }
 
@@ -46,10 +46,10 @@ class Radiologi extends BaseController
         return view('radiologi/user/index', $data);
     }
 
-    public function create()
+    public function store()
     {
         // Cek akses
-        if (!hasMenuAccess('radiologi', 'create')) {
+        if (!hasMenuAccess('Radiologi', 'create')) {
             return redirect()->back()->with('error', 'Anda tidak memiliki akses untuk menambah data');
         }
 
@@ -74,7 +74,7 @@ class Radiologi extends BaseController
                 ]);
 
                 session()->setFlashdata('success', 'Hasil radiologi berhasil ditambahkan');
-                return redirect()->to('/radiologi');
+                return redirect()->to('/Radiologi');
             }
 
             $data['validation'] = $this->validator;
@@ -83,10 +83,10 @@ class Radiologi extends BaseController
         return view('radiologi/user/create', $data);
     }
 
-    public function edit($no_rm)
+    public function update($no_rm)
     {
         // Cek akses
-        if (!hasMenuAccess('radiologi', 'update')) {
+        if (!hasMenuAccess('Radiologi', 'edit')) {
             return redirect()->back()->with('error', 'Anda tidak memiliki akses untuk mengubah data');
         }
 
@@ -112,7 +112,7 @@ class Radiologi extends BaseController
                 ]);
 
                 session()->setFlashdata('success', 'Hasil radiologi berhasil diupdate');
-                return redirect()->to('/radiologi');
+                return redirect()->to('/Radiologi');
             }
 
             $data['validation'] = $this->validator;
@@ -124,7 +124,7 @@ class Radiologi extends BaseController
     public function delete($no_rm)
     {
         // Cek akses
-        if (!hasMenuAccess('radiologi', 'delete')) {
+        if (!hasMenuAccess('Radiologi', 'delete')) {
             return redirect()->back()->with('error', 'Anda tidak memiliki akses untuk menghapus data');
         }
 
@@ -134,6 +134,6 @@ class Radiologi extends BaseController
             session()->setFlashdata('error', 'Hasil radiologi gagal dihapus');
         }
 
-        return redirect()->to('/radiologi');
+        return redirect()->to('/Radiologi');
     }
 }

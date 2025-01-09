@@ -4,8 +4,8 @@
 <div class="container-fluid">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800"><?= esc($title) ?></h1>
-        <?php if (hasMenuAccess('laboratorium', 'create')): ?>
-            <a href="<?= base_url('laboratorium/create') ?>" class="btn btn-primary btn-sm">
+        <?php if (hasMenuAccess('Laboratorium', 'create')): ?>
+            <a href="<?= base_url('Laboratorium/create') ?>" class="btn btn-primary btn-sm">
                 <i class="fas fa-plus"></i> Tambah Hasil Laboratorium
             </a>
         <?php endif; ?>
@@ -18,7 +18,7 @@
     <?php endif; ?>
 
     <!-- Pencarian -->
-    <form action="<?= base_url('laboratorium') ?>" method="get" class="mb-3">
+    <form action="<?= base_url('Laboratorium') ?>" method="get" class="mb-3">
         <div class="input-group">
             <input type="text" name="keyword" class="form-control" placeholder="Cari hasil laboratorium..." value="<?= esc($keyword) ?>">
             <div class="input-group-append">
@@ -53,11 +53,21 @@
                                 <td><?= esc($item['hasil_lab']) ?></td>
                                 <td><?= esc($item['biaya']) ?></td>
                                 <td>
-                                    <a href="<?= base_url('laboratorium/edit/' . $item['no_rm']) ?>" class="btn btn-warning btn-sm">Edit</a>
-                                    <form action="<?= base_url('laboratorium/delete/' . $item['no_rm']) ?>" method="post" class="d-inline" onsubmit="return confirm('Yakin hapus data ini?')">
-                                        <?= csrf_field() ?>
-                                        <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
-                                    </form>
+                                    <div class="btn-group" role="group">
+                                        <?php if (hasMenuAccess('Laboratorium', 'edit')): ?>
+                                            <a href="<?= base_url('Laboratorium/edit/' . $item['no_rm']) ?>" class="btn btn-warning btn-sm">
+                                                <i class="fas fa-edit"></i> Edit    
+                                            </a>
+                                        <?php endif; ?>
+                                        <?php if (hasMenuAccess('Laboratorium', 'delete')): ?>
+                                            <form action="<?= base_url('Laboratorium/delete/' . $item['no_rm']) ?>" method="post" class="d-inline" onsubmit="return confirm('Yakin hapus data ini?')">
+                                                <?= csrf_field() ?>
+                                                <button type="submit" class="btn btn-danger btn-sm">
+                                                    <i class="fas fa-trash"></i> Hapus
+                                                </button>
+                                            </form>
+                                        <?php endif; ?>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -71,7 +81,7 @@
                     <ul class="pagination justify-content-center">
                         <?php for ($i = 1; $i <= $totalPages; $i++): ?>
                             <li class="page-item <?= ($currentPage == $i) ? 'active' : '' ?>">
-                                <a class="page-link" href="<?= base_url('laboratorium?keyword=' . esc($keyword) . '&page=' . $i) ?>"><?= $i ?></a>
+                                <a class="page-link" href="<?= base_url('Laboratorium?keyword=' . esc($keyword) . '&page=' . $i) ?>"><?= $i ?></a>
                             </li>
                         <?php endfor; ?>
                     </ul>

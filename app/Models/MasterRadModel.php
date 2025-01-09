@@ -12,13 +12,13 @@ class MasterRadModel extends Model
     protected $useTimestamps = true;
 
     // Method untuk mengambil semua tipe pemeriksaan rad atau berdasarkan ID
-    public function getTipePeriksaRad($id = false)
+    public function getTipePeriksaRad($id_tipeperiksa_rad = false)
     {
-        if ($id === false) {
+        if ($id_tipeperiksa_rad === false) {
             return $this->findAll(); // Mengambil semua data
         }
 
-        return $this->find($id); // Mengambil data berdasarkan ID
+        return $this->find($id_tipeperiksa_rad); // Mengambil data berdasarkan ID
     }
 
     // Method untuk pencarian dan pagination

@@ -4,14 +4,14 @@
 <div class="container-fluid">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Edit Hasil Radiologi</h1>
-        <a href="<?= base_url('radiologi') ?>" class="btn btn-secondary btn-sm">
+        <a href="<?= base_url('Radiologi') ?>" class="btn btn-secondary btn-sm">
             <i class="fas fa-arrow-left"></i> Kembali
         </a>
     </div>
 
     <div class="card shadow mb-4">
         <div class="card-body">
-            <form action="<?= base_url('radiologi/edit/' . $hasil_rad['no_rm']) ?>" method="post">
+            <form action="<?= base_url('Radiologi/edit/' . $hasil_rad['no_rm']) ?>" method="post">
                 <?= csrf_field() ?>
 
                 <div class="form-group">
@@ -21,7 +21,7 @@
 
                 <div class="form-group">
                     <label>Tipe Pemeriksaan</label>
-                    <input type="text" class="form-control" value="<?= esc($hasil_rad['tipeperiksa_rad']) ?>" readonly>
+                    <input type="text" class="form-control" value="<?= esc($hasil_rad['id_tipeperiksa_rad']) ?>" readonly>
                 </div>
 
                 <div class="form-group">

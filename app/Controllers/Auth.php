@@ -77,7 +77,8 @@ class Auth extends BaseController
     {
 
         $roleModel = new \App\Models\RoleModel(); // Pastikan model role tersedia
-        $roles = $roleModel->findAll();
+        $roles = $roleModel->getNonAdminRoles();
+
 
         if ($this->request->getMethod() === 'post') {
             if (!$this->validate([
@@ -95,7 +96,7 @@ class Auth extends BaseController
                     ]
                 ],
                 'email' => [
-                    'rules' => 'required|valid_email|is_unique[users.email]',
+                    'rules' => 'required|valid_email|is_unique[user.email]',
                     'errors' => [
                         'required' => 'Email harus diisi',
                         'valid_email' => 'Format email tidak valid',
@@ -128,7 +129,7 @@ class Auth extends BaseController
             }
 
             $data = [
-                'nama' => $this->request->getPost('nama'),
+                'nama_lengkap' => $this->request->getPost('nama_lengkap'),
                 'username' => $this->request->getPost('username'),
                 'email' => $this->request->getPost('email'),
                 'password' => $this->request->getPost('password'), // Sudah di-hash oleh Model

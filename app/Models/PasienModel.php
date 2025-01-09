@@ -8,7 +8,7 @@ class PasienModel extends Model
 {
     protected $table = 'pasien';
     protected $primaryKey = 'no_rm';
-    protected $allowedFields = ['no_rm', 'nama', 'perusahaan', 'nik', 'departemen', 'bagian', 'usia', 'tgl_mcu'];
+    protected $allowedFields = ['nama', 'perusahaan', 'nik', 'departemen', 'bagian', 'usia', 'tgl_mcu'];
     protected $useTimestamps = true;
 
     public function getPasien($no_rm = false)

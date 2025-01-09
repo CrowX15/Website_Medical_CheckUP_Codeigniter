@@ -22,7 +22,7 @@ class Laboratorium extends BaseController
     public function index()
     {
         // Cek akses
-        if (!hasMenuAccess('laboratorium', 'view')) {
+        if (!hasMenuAccess('Laboratorium', 'view')) {
             return redirect()->back()->with('error', 'Anda tidak memiliki akses ke menu ini');
         }
 
@@ -46,9 +46,9 @@ class Laboratorium extends BaseController
         return view('laboratorium/user/index', $data);
     }
 
-    public function create()
+    public function store()
     {
-        if (!hasMenuAccess('laboratorium', 'create')) {
+        if (!hasMenuAccess('Laboratorium', 'create')) {
             return redirect()->back()->with('error', 'Anda tidak memiliki akses untuk menambah data');
         }
 
@@ -76,7 +76,7 @@ class Laboratorium extends BaseController
                 ]);
 
                 session()->setFlashdata('success', 'Hasil laboratorium berhasil ditambahkan');
-                return redirect()->to('/laboratorium');
+                return redirect()->to('/Laboratorium');
             }
 
             $data['validation'] = $this->validator;
@@ -85,9 +85,9 @@ class Laboratorium extends BaseController
         return view('laboratorium/user/create', $data);
     }
 
-    public function edit($no_rm)
+    public function update($no_rm)
     {
-        if (!hasMenuAccess('laboratorium', 'edit')) {
+        if (!hasMenuAccess('Laboratorium', 'edit')) {
             return redirect()->back()->with('error', 'Anda tidak memiliki akses untuk mengedit data');
         }
 
@@ -115,7 +115,7 @@ class Laboratorium extends BaseController
                 ]);
 
                 session()->setFlashdata('success', 'Hasil laboratorium berhasil diupdate');
-                return redirect()->to('/laboratorium');
+                return redirect()->to('/Laboratorium');
             }
 
             $data['validation'] = $this->validator; // Kirim objek validasi ke view
@@ -126,11 +126,15 @@ class Laboratorium extends BaseController
 
     public function delete($no_rm)
     {
+        if (!hasMenuAccess('Laboratorium', 'delete')) {
+            return redirect()->back()->with('error', 'Anda tidak memiliki akses untuk mengedit data');
+        }
+
         if ($this->labModel->delete($no_rm)) {
             session()->setFlashdata('success', 'Hasil laboratorium berhasil dihapus');
         } else {
             session()->setFlashdata('error', 'Hasil laboratorium gagal dihapus');
         }
-        return redirect()->to('/laboratorium');
+        return redirect()->to('/Laboratorium');
     }
 }

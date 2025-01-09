@@ -9,7 +9,7 @@ class UserModel extends Model
     protected $table = 'user';
     protected $primaryKey = 'id';
     protected $useTimestamps = true;
-    protected $allowedFields = ['nama', 'username', 'email', 'password', 'role_id'];
+    protected $allowedFields = ['nama_lengkap', 'username', 'email', 'password', 'role_id'];
 
     
     protected $beforeInsert = ['hashPassword'];

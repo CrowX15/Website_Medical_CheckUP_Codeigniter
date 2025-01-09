@@ -16,7 +16,7 @@ class Pasien extends BaseController
     public function index()
     {
         // Cek akses
-        if (!hasMenuAccess('pasien', 'view')) {
+        if (!hasMenuAccess('Pasien', 'view')) {
             return redirect()->back()->with('error', 'Anda tidak memiliki akses ke menu ini');
         }
 
@@ -41,9 +41,9 @@ class Pasien extends BaseController
     }
 
 
-    public function create()
+    public function store()
     {
-        if (!hasMenuAccess('pasien', 'create')) {
+        if (!hasMenuAccess('Pasien', 'create')) {
             return redirect()->back()->with('error', 'Anda tidak memiliki akses untuk menambah data');
         }
         $data = [
@@ -71,7 +71,7 @@ class Pasien extends BaseController
                 ]);
 
                 session()->setFlashdata('success', 'Data berhasil ditambahkan');
-                return redirect()->to('/pasien');
+                return redirect()->to('/Pasien');
             }
             
             $data['validation'] = $this->validator;
@@ -80,8 +80,13 @@ class Pasien extends BaseController
         return view('pasien/create', $data);
     }
 
-    public function edit($no_rm)
+    public function update($no_rm)
     {
+        // Cek akses
+        if (!hasMenuAccess('Pasien', 'view')) {
+            return redirect()->back()->with('error', 'Anda tidak memiliki akses ke menu ini');
+        }
+
         $data['title'] = 'Edit Data Pasien';
         $data['pasien'] = $this->pasienModel->getPasien($no_rm);
         $data['validation'] = \Config\Services::validation();
@@ -109,7 +114,7 @@ class Pasien extends BaseController
                 ]);
     
                 session()->setFlashdata('success', 'Data berhasil diupdate');
-                return redirect()->to('/pasien');
+                return redirect()->to('/Pasien');
             }
     
             $data['validation'] = $this->validator; // Kirim objek validasi ke view
@@ -121,11 +126,17 @@ class Pasien extends BaseController
     
     public function delete($no_rm)
     {
+         // Cek akses
+        if (!hasMenuAccess('Pasien', 'delete')) {
+            return redirect()->back()->with('error', 'Anda tidak memiliki akses untuk menghapus data');
+        }
+
+        //menghapus pasien
         if ($this->pasienModel->delete($no_rm)) {
             session()->setFlashdata('success', 'Data berhasil dihapus');
         } else {
             session()->setFlashdata('error', 'Data gagal dihapus');
         }
-        return redirect()->to('/pasien');
+        return redirect()->to('/Pasien');
     }
 }

@@ -7,7 +7,8 @@ use CodeIgniter\Model;
 class LaboratoriumModel extends Model
 {
     protected $table = 'laboratorium';
-    protected $allowedFields = ['no_rm', 'id_tipeperiksa_lab', 'hasil_lab', 'biaya'];
+    protected $primaryKey = 'no_rm';
+    protected $allowedFields = ['id_tipeperiksa_lab', 'hasil_lab', 'biaya'];
     protected $useTimestamps = true;
 
     public function getHasilLab($no_rm = false)
@@ -36,6 +37,7 @@ class LaboratoriumModel extends Model
         if ($keyword) {
             $builder->groupStart()
                     ->like('pasien.nama', $keyword)
+                    ->orlike('laboratorium.no_rm', $keyword)
                     ->orLike('pasien.no_rm', $keyword)
                     ->orLike('master_lab.tipeperiksa_lab', $keyword)
                     ->groupEnd();

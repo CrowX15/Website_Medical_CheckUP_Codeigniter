@@ -5,8 +5,8 @@
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Data Pasien</h1>
-        <?php if(hasMenuAccess('pasien', 'create')): ?>
-        <a href="<?= base_url('pasien/create') ?>" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+        <?php if(hasMenuAccess('Pasien', 'create')): ?>
+        <a href="<?= base_url('Pasien/create') ?>" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
             <i class="fas fa-plus fa-sm text-white-50"></i> Tambah Pasien
         </a>
         <?php endif; ?>
@@ -22,7 +22,7 @@
     <?php endif; ?>
 
     <!-- Search Form -->
-    <form action="<?= base_url('pasien') ?>" method="get" class="mb-3">
+    <form action="<?= base_url('Pasien') ?>" method="get" class="mb-3">
         <div class="input-group">
             <input type="text" name="keyword" class="form-control" placeholder="Cari pasien..." 
                    value="<?= $keyword ?? '' ?>">
@@ -31,7 +31,7 @@
                     <i class="fas fa-search fa-sm"></i>
                 </button>
                 <?php if(!empty($keyword)): ?>
-                    <a href="<?= base_url('pasien') ?>" class="btn btn-secondary">
+                    <a href="<?= base_url('Pasien') ?>" class="btn btn-secondary">
                         <i class="fas fa-times"></i>
                     </a>
                 <?php endif; ?>
@@ -72,14 +72,14 @@
 
                             <td>
                                 <div class="btn-group" role="group">
-                                    <?php if(hasMenuAccess('pasien', 'edit')): ?>
-                                    <a href="<?= base_url('pasien/edit/'.$p['no_rm']) ?>" 
+                                    <?php if(hasMenuAccess('Pasien', 'edit')): ?>
+                                    <a href="<?= base_url('Pasien/edit/'.$p['no_rm']) ?>" 
                                        class="btn btn-warning btn-sm" title="Edit">
                                         <i class="fas fa-edit"></i>
                                     </a>
                                     <?php endif; ?>
-                                    <?php if(hasMenuAccess('pasien', 'delete')): ?>
-                                    <form action="= base_url('pasien/delete/'.$p['no_rm']) ?>" 
+                                    <?php if(hasMenuAccess('Pasien', 'delete')): ?>
+                                    <form action="<?= base_url('Pasien/delete/'.$p['no_rm']) ?>" 
                                           method="post" class="d-inline" 
                                           onsubmit="return confirm('Yakin hapus data ini?')">
                                         <?= csrf_field() ?>
@@ -104,7 +104,7 @@
                     <?php for($page = 1; $page <= $totalPages; $page++): ?>
                         <li class="page-item <?= ($currentPage == $page) ? 'active' : '' ?>">
                             <a class="page-link" 
-                               href="<?= base_url('pasien?keyword='.$keyword.'&page='.$page) ?>">
+                               href="<?= base_url('Pasien?keyword='.$keyword.'&page='.$page) ?>">
                                 <?= $page ?>
                             </a>
                         </li>

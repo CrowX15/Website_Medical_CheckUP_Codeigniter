@@ -17,8 +17,8 @@
 <div class="container-fluid">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Data Kesimpulan Pemeriksaan</h1>
-        <?php if(hasMenuAccess('kesimpulan', 'create')): ?>
-        <a href="<?= base_url('kesimpulan/create') ?>" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+        <?php if(hasMenuAccess('Kesimpulan', 'create')): ?>
+        <a href="<?= base_url('Kesimpulan/create') ?>" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
             <i class="fas fa-plus fa-sm text-white-50"></i> Tambah Kesimpulan
         </a>
         <?php endif; ?>
@@ -33,7 +33,7 @@
         </div>
     <?php endif; ?>
 
-    <form action="<?= base_url('kesimpulan') ?>" method="get" class="mb-3">
+    <form action="<?= base_url('Kesimpulan') ?>" method="get" class="mb-3">
         <div class="input-group">
             <input type="text" name="keyword" class="form-control" placeholder="Cari kesimpulan..." 
                    value="<?= $keyword ?? '' ?>">
@@ -42,7 +42,7 @@
                     <i class="fas fa-search fa-sm"></i>
                 </button>
                 <?php if(!empty($keyword)): ?>
-                    <a href="<?= base_url('kesimpulan') ?>" class="btn btn-secondary">
+                    <a href="<?= base_url('Kesimpulan') ?>" class="btn btn-secondary">
                         <i class="fas fa-times"></i>
                     </a>
                 <?php endif; ?>
@@ -60,16 +60,16 @@
                     <p class="card-text"><strong>Pemeriksaan Fisik:</strong> <?= esc($k['pemeriksaan_fisik']) ?></p>
                     <p class="card-text"><strong>Thorax:</strong> <?= esc($k['thorax']) ?></p>
                     <div class="btn-group" role="group">
-                        <?php if(hasMenuAccess('kesimpulan', 'edit')): ?>
-                        <a href="<?= base_url('kesimpulan/edit/'.$k['no_rm']) ?>" class="btn btn-warning btn-sm" title="Edit">
+                        <?php if(hasMenuAccess('Kesimpulan', 'edit')): ?>
+                        <a href="<?= base_url('Kesimpulan/edit/'.$k['no_rm']) ?>" class="btn btn-warning btn-sm" title="Edit">
                             <i class="fas fa-edit"></i>
                         </a>
                         <?php endif; ?>
                         <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#detailModal<?= $k['no_rm'] ?>">
                             Detail
                         </button>
-                        <?php if(hasMenuAccess('kesimpulan', 'delete')): ?>
-                        <form action="<?= base_url('kesimpulan/delete/'.$k['no_rm']) ?>" method="post" class="d-inline" onsubmit="return confirm('Yakin hapus data ini?')">
+                        <?php if(hasMenuAccess('Kesimpulan', 'delete')): ?>
+                        <form action="<?= base_url('Kesimpulan/delete/'.$k['no_rm']) ?>" method="post" class="d-inline" onsubmit="return confirm('Yakin hapus data ini?')">
                             <?= csrf_field() ?>
                             <input type="hidden" name="_method" value="DELETE">
                             <button type="submit" class="btn btn-danger btn-sm" title="Hapus">
@@ -116,7 +116,7 @@
             <?php for($page = 1; $page <= $totalPages; $page++): ?>
                 <li class="page-item <?= ($currentPage == $page) ? 'active' : '' ?>">
                     <a class="page-link" 
-                       href="<?= base_url('kesimpulan?keyword='.$keyword.'&page='.$page) ?>">
+                       href="<?= base_url('Kesimpulan?keyword='.$keyword.'&page='.$page) ?>">
                        <?= $page ?>
                     </a>
                 </li>

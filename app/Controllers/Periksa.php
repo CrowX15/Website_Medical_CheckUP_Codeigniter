@@ -19,7 +19,7 @@ class Periksa extends BaseController
     public function index()
     {
         // Cek akses
-        if (!hasMenuAccess('pemeriksaan', 'view')) {
+        if (!hasMenuAccess('Periksa', 'view')) {
             return redirect()->back()->with('error', 'Anda tidak memiliki akses ke menu ini');
         }
 
@@ -43,10 +43,10 @@ class Periksa extends BaseController
         return view('periksa/index', $data);
     }
 
-    public function create()
+    public function store()
     {
         // Cek akses
-        if (!hasMenuAccess('pemeriksaan', 'create')) {
+        if (!hasMenuAccess('Periksa', 'create')) {
             return redirect()->back()->with('error', 'Anda tidak memiliki akses untuk menambah data');
         }
 
@@ -84,7 +84,7 @@ class Periksa extends BaseController
                 ]);
 
                 session()->setFlashdata('success', 'Data pemeriksaan fisik berhasil ditambahkan');
-                return redirect()->to('/periksa');
+                return redirect()->to('/Periksa');
             }
 
             $data['validation'] = $this->validator;
@@ -93,10 +93,10 @@ class Periksa extends BaseController
         return view('periksa/create', $data);
     }
 
-    public function edit($no_rm)
+    public function update($no_rm)
     {
         // Cek akses
-        if (!hasMenuAccess('pemeriksaan', 'edit')) {
+        if (!hasMenuAccess('Periksa', 'edit')) {
             return redirect()->back()->with('error', 'Anda tidak memiliki akses untuk mengedit data');
         }
 
@@ -135,7 +135,7 @@ class Periksa extends BaseController
                 ]);
 
                 session()->setFlashdata('success', 'Data pemeriksaan fisik berhasil diupdate');
-                return redirect()->to('/periksa');
+                return redirect()->to('/Periksa');
             }
 
             $data['validation'] = $this->validator; // Kirim objek validasi ke view
@@ -151,6 +151,6 @@ class Periksa extends BaseController
         } else {
             session()->setFlashdata('error', 'Data pemeriksaan fisik gagal dihapus');
         }
-        return redirect()->to('/periksa');
+        return redirect()->to('/Periksa');
     }
 }

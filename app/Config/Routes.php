@@ -28,74 +28,73 @@ $routes->group('', ['filter' => 'auth'], function($routes) {
     $routes->get('dashboard', 'Dashboard::index');
 
     // Rute Manajemen Pasien
-    $routes->group('pasien', function($routes) {
-        $routes->get('', 'Pasien::index');
-        $routes->get('create', 'Pasien::create');
-        $routes->post('create', 'Pasien::create');
-        $routes->get('edit/(:segment)', 'Pasien::edit/$1');
-        $routes->post('edit/(:segment)', 'Pasien::edit/$1');
-        $routes->get('delete/(:segment)', 'Pasien::delete/$1');
-        
+    $routes->group('Pasien', function($routes) {
+        $routes->get('', 'Pasien::index'); // Menampilkan daftar pasien
+        $routes->get('create', 'Pasien::store'); // Menampilkan form pembuatan pasien
+        $routes->post('create', 'Pasien::store'); // Memproses pembuatan pasien
+        $routes->get('edit/(:segment)', 'Pasien::update/$1'); // Menampilkan form edit pasien
+        $routes->post('edit/(:segment)', 'Pasien::update/$1'); // Memproses pembaruan pasien
+        $routes->post('delete/(:segment)', 'Pasien::delete/$1'); // Menghapus pasien
     });
 
     // Rute Pemeriksaan Fisik
-    $routes->group('periksa', function($routes) {
+    $routes->group('Periksa', function($routes) {
         $routes->get('', 'Periksa::index');
-        $routes->get('create', 'Periksa::create');
-        $routes->post('create', 'Periksa::create');
-        $routes->get('edit/(:segment)', 'Periksa::edit/$1');
-        $routes->post('edit/(:segment)', 'Periksa::edit/$1');
-        $routes->get('delete/(:segment)', 'Periksa::delete/$1');
+        $routes->get('create', 'Periksa::store');
+        $routes->post('create', 'Periksa::store');
+        $routes->get('edit/(:segment)', 'Periksa::update/$1');
+        $routes->post('edit/(:segment)', 'Periksa::update/$1');
+        $routes->post('delete/(:segment)', 'Periksa::delete/$1');
     });
 
     // Rute Laboratorium
-    $routes->group('laboratorium', function($routes) {
+    $routes->group('Laboratorium', function($routes) {
         $routes->get('', 'Laboratorium::index');
-        $routes->get('create', 'Laboratorium::create');
-        $routes->post('create', 'Laboratorium::create');
-        $routes->get('edit/(:segment)', 'Laboratorium::edit/$1');
-        $routes->post('edit/(:segment)', 'Laboratorium::edit/$1');
-        $routes->get('delete/(:segment)', 'Laboratorium::delete/$1');
+        $routes->get('create', 'Laboratorium::store');
+        $routes->post('create', 'Laboratorium::store');
+        $routes->get('edit/(:segment)', 'Laboratorium::update/$1');
+        $routes->post('edit/(:segment)', 'Laboratorium::update/$1');
+        $routes->post('delete/(:segment)', 'Laboratorium::delete/$1');
     });
 
     // Rute Master Lab
-    $routes->group('masterlab', function($routes) {
-        $routes->get('', 'masterlab::index');
-        $routes->get('create', 'masterlab::create');
-        $routes->post('create', 'masterlab::create');
-        $routes->get('edit/(:segment)', 'masterlab::edit/$1');
-        $routes->post('edit/(:segment)', 'masterlab::edit/$1');
-        $routes->get('delete/(:segment)', 'masterlab::delete/$1');
+    $routes->group('MasterLab', function($routes) {
+        $routes->get('', 'MasterLab::index');
+        $routes->get('create', 'MasterLab::store');
+        $routes->post('create', 'MasterLab::store');
+        $routes->get('edit/(:segment)', 'MasterLab::update/$1');
+        $routes->post('edit/(:segment)', 'MasterLab::update/$1');
+        $routes->post('delete/(:segment)', 'MasterLab::delete/$1');
     });
 
     // Rute Radiologi
-    $routes->group('radiologi', function($routes) {
+    $routes->group('Radiologi', function($routes) {
         $routes->get('', 'Radiologi::index');
-        $routes->get('create', 'Radiologi::create');
-        $routes->post('create', 'Radiologi::create');
-        $routes->get('edit/(:segment)', 'Radiologi::edit/$1');
-        $routes->post('edit/(:segment)', 'Radiologi::edit/$1');
-        $routes->get('delete/(:segment)', 'Radiologi::delete/$1');
+        $routes->get('create', 'Radiologi::store');
+        $routes->post('create', 'Radiologi::store');
+        $routes->get('edit/(:segment)', 'Radiologi::update/$1');
+        $routes->post('edit/(:segment)', 'Radiologi::update/$1');
+        $routes->post('delete/(:segment)', 'Radiologi::delete/$1');
     });
 
     // Rute Master Radiologi
-    $routes->group('masterrad', function($routes) {
-        $routes->get('', 'masterrad::index');
-        $routes->get('create', 'masterrad::create');
-        $routes->post('create', 'masterrad::create');
-        $routes->get('edit/(:segment)', 'masterrad::edit/$1');
-        $routes->post('edit/(:segment)', 'masterrad::edit/$1');
-        $routes->get('delete/(:segment)', 'masterrad::delete/$1');
+    $routes->group('MasterRad', function($routes) {
+        $routes->get('', 'MasterRad::index');
+        $routes->get('create', 'MasterRad::store');
+        $routes->post('create', 'MasterRad::store');
+        $routes->get('edit/(:segment)', 'MasterRad::update/$1');
+        $routes->post('edit/(:segment)', 'MasterRad::update/$1');
+        $routes->post('delete/(:segment)', 'MasterRad::delete/$1');
     });
 
     // Rute Kesimpulan
-    $routes->group('kesimpulan', function($routes) {
+    $routes->group('Kesimpulan', function($routes) {
         $routes->get('', 'Kesimpulan::index');
-        $routes->get('create', 'Kesimpulan::create');
-        $routes->post('create', 'Kesimpulan::create');
-        $routes->get('edit/(:segment)', 'Kesimpulan::edit/$1');
-        $routes->post('edit/(:segment)', 'Kesimpulan::edit/$1');
-        $routes->get('delete/(:segment)', 'Kesimpulan::delete/$1');
+        $routes->get('create', 'Kesimpulan::store');
+        $routes->post('create', 'Kesimpulan::store');
+        $routes->get('edit/(:segment)', 'Kesimpulan::update/$1');
+        $routes->post('edit/(:segment)', 'Kesimpulan::update/$1');
+        $routes->post('delete/(:segment)', 'Kesimpulan::delete/$1');
     });
 });
 

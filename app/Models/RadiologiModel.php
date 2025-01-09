@@ -7,7 +7,8 @@ use CodeIgniter\Model;
 class RadiologiModel extends Model
 {
     protected $table = 'radiologi';
-    protected $allowedFields = ['no_rm', 'id_tipeperiksa_rad', 'hasil_rad', 'kesimpulan'];
+    protected $primaryKey = 'no_rm';
+    protected $allowedFields = ['id_tipeperiksa_rad', 'hasil_rad', 'kesimpulan'];
     protected $useTimestamps = true;
 
     // Mengambil hasil radiologi berdasarkan no_rm
@@ -37,6 +38,7 @@ class RadiologiModel extends Model
         if ($keyword) {
             $builder->groupStart()
                     ->like('pasien.nama', $keyword)
+                    ->orlike('radiologi.no_rm', $keyword)
                     ->orLike('hasil_rad', $keyword)
                     ->orLike('kesimpulan', $keyword)
                     ->groupEnd();
