@@ -83,7 +83,7 @@
                                           method="post" class="d-inline" 
                                           onsubmit="return confirm('Yakin hapus data ini?')">
                                         <?= csrf_field() ?>
-                                        <input type="hidden" name="_method" value="DELETE">
+                                        <input type="hidden" name="_method" value="delete">
                                         <button type="submit" class="btn btn-danger btn-sm" title="Hapus">
                                             <i class="fas fa-trash"></i>
                                         </button>

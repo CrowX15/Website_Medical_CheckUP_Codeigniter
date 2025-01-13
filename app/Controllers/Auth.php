@@ -141,9 +141,9 @@ class Auth extends BaseController
             return redirect()->to('/login');
         }
 
-        return view('auth/register', [
+        return view('auth/register',[
             'title' => 'Register - Medical Checkup',
-            'roles' => $roles 
+            'roles' => $roles,
         ]);
     }
 

@@ -107,7 +107,7 @@ class Kesimpulan extends BaseController
                 ]);
 
                 session()->setFlashdata('success', 'Data kesimpulan berhasil ditambahkan');
-                return redirect()->to('/kesimpulan');
+                return redirect()->to('/Kesimpulan');
             }
 
             $data['validation'] = $this->validator;
@@ -150,7 +150,7 @@ class Kesimpulan extends BaseController
                 ]);
 
                 session()->setFlashdata('success', 'Data kesimpulan berhasil diupdate');
-                return redirect()->to('/kesimpulan');
+                return redirect()->to('/Kesimpulan');
             }
 
             $data['validation'] = $this->validator; // Kirim objek validasi ke view
@@ -171,6 +171,6 @@ class Kesimpulan extends BaseController
         } else {
             session()->setFlashdata('error', 'Data kesimpulan gagal dihapus');
         }
-        return redirect()->to('/kesimpulan');
+        return redirect()->to('/Kesimpulan');
     }
 }

@@ -127,7 +127,7 @@ class Laboratorium extends BaseController
     public function delete($no_rm)
     {
         if (!hasMenuAccess('Laboratorium', 'delete')) {
-            return redirect()->back()->with('error', 'Anda tidak memiliki akses untuk mengedit data');
+            return redirect()->back()->with('error', 'Anda tidak memiliki akses untuk Mendelete data');
         }
 
         if ($this->labModel->delete($no_rm)) {

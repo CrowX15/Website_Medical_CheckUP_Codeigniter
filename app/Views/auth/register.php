@@ -72,7 +72,7 @@
                                                 </div>
                                             <?php endif ?>
 
-                                            <form class="user" action="<?= base_url('auth/register') ?>" method="POST">
+                                            <form class="user" action="<?= base_url('auth/register') ?>" method="post">
                                                 <?= csrf_field() ?>
                                                 <div class="form-group">
                                                     <input type="text" 
@@ -114,18 +114,18 @@
                                                 </div>
 
                                                 <div class="form-group">
-                                                        <select class="form-control form-control-user" name="role_id" required>
-                                                            <option value="">Pilih Role</option>
+                                                    <select class="form-control form-control-user" name="role_id" required>
+                                                        <option value="">Pilih Role</option>
                                                             <?php foreach ($roles as $role): ?>
                                                                 <option value="<?= $role['id'] ?>" <?= old('role_id') == $role['id'] ? 'selected' : '' ?>>
                                                                     <?= $role['name'] ?>
                                                                 </option>
                                                             <?php endforeach; ?>
-                                                        </select>
+                                                    </select>
                                                         <?php if (session()->getFlashdata('errors')): ?>
                                                             <div class="text-danger"><?= session()->getFlashdata('errors')['role_id'] ?? '' ?></div>
                                                         <?php endif; ?>
-                                                    </div>
+                                                </div>
 
 
 
