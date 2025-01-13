@@ -74,7 +74,7 @@
                                 <div class="btn-group" role="group">
                                     <?php if(hasMenuAccess('Pasien', 'edit')): ?>
                                     <a href="<?= base_url('Pasien/edit/'.$p['no_rm']) ?>" 
-                                       class="btn btn-warning btn-sm" title="Edit">
+                                       class="btn btn-warning btn-sm" title="edit">
                                         <i class="fas fa-edit"></i>
                                     </a>
                                     <?php endif; ?>
