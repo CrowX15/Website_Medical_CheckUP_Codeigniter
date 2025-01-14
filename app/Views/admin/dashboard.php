@@ -21,8 +21,8 @@
         </h1>
     </div>
 
-<!-- Welcome Card -->
-<div class="row">
+    <!-- Welcome Card -->
+    <div class="row">
         <div class="col-xl-12 mb-4">
             <div class="card border-left-primary shadow h-100 py-2">
                 <div class="card-body">
@@ -54,7 +54,9 @@
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                     Total Pasien</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">215</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                    <?= $total_pasien ?? 0 ?>
+                                </div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-users fa-2x text-gray-300"></i>
@@ -76,7 +78,9 @@
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
                                     Pendaftaran Hari Ini</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">12</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                    <?= $pendaftaran_hari_ini ?? 0 ?>
+                                </div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
@@ -88,7 +92,6 @@
         </div>
     <?php endif; ?>
 
-
     <?php if($role_id == 3): // Dokter ?>
     <div class="row">
         <div class="col-xl-3 col-md-6 mb-4">
@@ -98,7 +101,9 @@
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                 Pemeriksaan Fisik</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">15</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                <?= $jumlah_periksa ?? 0 ?>
+                            </div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-heartbeat fa-2x text-gray-300"></i>
@@ -114,7 +119,9 @@
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                 Kesimpulan Medis</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">8</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                <?= $jumlah_kesimpulan ?? 0 ?>
+                            </div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-notes-medical fa-2x text-gray-300"></i>
@@ -123,8 +130,27 @@
                 </div>
             </div>
         </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                Total Pasien</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                <?= $total_pasien ?? 0 ?>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-users fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <?php endif; ?>
+
 
     <?php if($role_id == 4): // User Laboratorium ?>
         <div class="row">
@@ -135,7 +161,9 @@
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                     Hasil Laboratorium</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">20</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                    <?= $jumlah_lab ?? 0 ?>
+                                </div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-vials fa-2x text-gray-300"></i>
@@ -156,7 +184,9 @@
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
                                     Tipe Pemeriksaan Lab</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">10</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                    <?= $jumlah_tipe_lab ?? 0 ?>
+                                </div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-flask fa-2x text-gray-300"></i>
@@ -172,7 +202,9 @@
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                     Hasil Laboratorium</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">35</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                    <?= $jumlah_lab ?? 0 ?>
+                                </div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-vials fa-2x text-gray-300"></i>
@@ -184,7 +216,6 @@
         </div>
     <?php endif; ?>
 
-
     <?php if($role_id == 6): // User Radiologi ?>
         <div class="row">
             <div class="col-xl-3 col-md-6 mb-4">
@@ -194,7 +225,9 @@
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
                                     Hasil Radiologi</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                    <?= $jumlah_radiologi ?? 0 ?>
+                                </div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-x-ray fa-2x text-gray-300"></i>
@@ -205,7 +238,6 @@
             </div>
         </div>
     <?php endif; ?>
-    
 
     <?php if($role_id == 7): // Admin Radiologi ?>
         <div class="row">
@@ -216,7 +248,9 @@
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                     Tipe Pemeriksaan Radiologi</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">7</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                    <?= $jumlah_tipe_radiologi ?? 0 ?>
+                                </div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-radiation fa-2x text-gray-300"></i>
@@ -232,7 +266,9 @@
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
                                     Hasil Radiologi</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">25</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                    <?= $jumlah_radiologi ?? 0 ?>
+                                </div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-x-ray fa-2x text-gray-300"></i>
@@ -243,9 +279,5 @@
             </div>
         </div>
     <?php endif; ?>
-        
-
 </div>
-
-
 <?= $this->endSection() ?>
