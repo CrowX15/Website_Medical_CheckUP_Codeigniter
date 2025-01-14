@@ -62,15 +62,7 @@
                                     </div>
                                     <div class="row justify-content-center">
                                         <div class="col-12">
-                                            <?php if (session()->has('errors')) : ?>
-                                                <div class="alert alert-danger">
-                                                    <ul>
-                                                        <?php foreach (session('errors') as $error) : ?>
-                                                            <li><?= esc($error) ?></li>
-                                                        <?php endforeach ?>
-                                                    </ul>
-                                                </div>
-                                            <?php endif ?>
+                                           
 
                                             <form class="user" action="<?= base_url('auth/register') ?>" method="post">
                                                 <?= csrf_field() ?>
@@ -81,6 +73,9 @@
                                                            placeholder="Nama Lengkap"
                                                            value="<?= old('nama_lengkap') ?>"
                                                            required>
+                                                      <?php if (session()->getFlashdata('errors')): ?>
+                                                          <div class="text-danger"><?= session()->getFlashdata('errors')['nama_lengkap'] ?? '' ?></div>
+                                                      <?php endif; ?>
                                                 </div>
                                                 <div class="form-group">
                                                     <input type="text" 
@@ -89,6 +84,9 @@
                                                            placeholder="Username"
                                                            value="<?= old('username') ?>"
                                                            required>
+                                                          <?php if (session()->getFlashdata('errors')): ?>
+                                                          <div class="text-danger"><?= session()->getFlashdata('errors')['username'] ?? '' ?></div>
+                                                      <?php endif; ?>
                                                 </div>
                                                 <div class="form-group">
                                                     <input type="password" 
@@ -96,6 +94,9 @@
                                                            name="password" 
                                                            placeholder="Password"
                                                            required>
+                                                          <?php if (session()->getFlashdata('errors')): ?>
+                                                          <div class="text-danger"><?= session()->getFlashdata('errors')['password'] ?? '' ?></div>
+                                                      <?php endif; ?>
                                                 </div>
                                                 <div class="form-group">
                                                     <input type="password" 
@@ -103,6 +104,9 @@
                                                            name="confirm_password" 
                                                            placeholder="Konfirmasi Password"
                                                            required>
+                                                           <?php if (session()->getFlashdata('errors')): ?>
+                                                          <div class="text-danger"><?= session()->getFlashdata('errors')['confirm_password'] ?? '' ?></div>
+                                                      <?php endif; ?>
                                                 </div>
                                                 <div class="form-group">
                                                     <input type="email" 
@@ -111,23 +115,33 @@
                                                            placeholder="Email"
                                                            value="<?= old('email') ?>"
                                                            required>
+                                                            <?php if (session()->getFlashdata('errors')): ?>
+                                                          <div class="text-danger"><?= session()->getFlashdata('errors')['email'] ?? '' ?></div>
+                                                      <?php endif; ?>
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <select class="form-control form-control-user" name="role_id" required>
-                                                        <option value="">Pilih Role</option>
-                                                            <?php foreach ($roles as $role): ?>
-                                                                <option value="<?= $role['id'] ?>" <?= old('role_id') == $role['id'] ? 'selected' : '' ?>>
-                                                                    <?= $role['name'] ?>
-                                                                </option>
-                                                            <?php endforeach; ?>
-                                                    </select>
-                                                        <?php if (session()->getFlashdata('errors')): ?>
-                                                            <div class="text-danger"><?= session()->getFlashdata('errors')['role_id'] ?? '' ?></div>
-                                                        <?php endif; ?>
+                                                   <select class="form-control" name="role_id" required style="
+                                                    appearance: none;
+                                                    -webkit-appearance: none;
+                                                    -moz-appearance: none;
+                                                    padding: 10px 15px; /* Padding yang disesuaikan */
+                                                    border: 1px solid #d1d3e2;
+                                                    font-size: 1.2rem; /* Ukuran font yang lebih besar */
+                                                    font-weight: 400;
+                                                    color: #6e707e;
+                                                    background-color: #fff;
+                                                    border-radius: 10px; /* Border radius yang lebih bulat */
+                                                    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+                                                    ">
+                                                       <option value="">Pilih Role</option>
+                                                          <?php foreach ($roles as $role): ?>
+                                                            <option value="<?= $role['id'] ?>" >
+                                                                <?= $role['name'] ?>
+                                                             </option>
+                                                        <?php endforeach; ?>
+                                                   </select>
                                                 </div>
-
-
 
                                                 <div class="form-group">
                                                     <button type="submit" class="btn btn-primary btn-user btn-block">
