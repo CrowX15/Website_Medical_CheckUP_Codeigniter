@@ -64,7 +64,7 @@
                                         <div class="col-12">
                                            
 
-                                            <form class="user" action="<?= base_url('auth/register') ?>" method="post">
+                                            <?= form_open('auth/register', ['class' => 'user']) ?>
                                                 <?= csrf_field() ?>
                                                 <div class="form-group">
                                                     <input type="text" 
@@ -73,8 +73,8 @@
                                                            placeholder="Nama Lengkap"
                                                            value="<?= old('nama_lengkap') ?>"
                                                            required>
-                                                      <?php if (session()->getFlashdata('errors')): ?>
-                                                          <div class="text-danger"><?= session()->getFlashdata('errors')['nama_lengkap'] ?? '' ?></div>
+                                                      <?php if (isset($errors['nama_lengkap'])): ?>
+                                                          <div class="text-danger"><?= $errors['nama_lengkap'] ?></div>
                                                       <?php endif; ?>
                                                 </div>
                                                 <div class="form-group">
@@ -84,8 +84,8 @@
                                                            placeholder="Username"
                                                            value="<?= old('username') ?>"
                                                            required>
-                                                          <?php if (session()->getFlashdata('errors')): ?>
-                                                          <div class="text-danger"><?= session()->getFlashdata('errors')['username'] ?? '' ?></div>
+                                                          <?php if (isset($errors['username'])): ?>
+                                                          <div class="text-danger"><?= $errors['username'] ?></div>
                                                       <?php endif; ?>
                                                 </div>
                                                 <div class="form-group">
@@ -94,8 +94,8 @@
                                                            name="password" 
                                                            placeholder="Password"
                                                            required>
-                                                          <?php if (session()->getFlashdata('errors')): ?>
-                                                          <div class="text-danger"><?= session()->getFlashdata('errors')['password'] ?? '' ?></div>
+                                                          <?php if (isset($errors['password'])): ?>
+                                                          <div class="text-danger"><?= $errors['password'] ?></div>
                                                       <?php endif; ?>
                                                 </div>
                                                 <div class="form-group">
@@ -104,8 +104,8 @@
                                                            name="confirm_password" 
                                                            placeholder="Konfirmasi Password"
                                                            required>
-                                                           <?php if (session()->getFlashdata('errors')): ?>
-                                                          <div class="text-danger"><?= session()->getFlashdata('errors')['confirm_password'] ?? '' ?></div>
+                                                           <?php if (isset($errors['confirm_password'])): ?>
+                                                          <div class="text-danger"><?= $errors['confirm_password'] ?></div>
                                                       <?php endif; ?>
                                                 </div>
                                                 <div class="form-group">
@@ -115,8 +115,8 @@
                                                            placeholder="Email"
                                                            value="<?= old('email') ?>"
                                                            required>
-                                                            <?php if (session()->getFlashdata('errors')): ?>
-                                                          <div class="text-danger"><?= session()->getFlashdata('errors')['email'] ?? '' ?></div>
+                                                            <?php if (isset($errors['email'])): ?>
+                                                          <div class="text-danger"><?= $errors['email'] ?></div>
                                                       <?php endif; ?>
                                                 </div>
 
@@ -136,11 +136,14 @@
                                                     ">
                                                        <option value="">Pilih Role</option>
                                                           <?php foreach ($roles as $role): ?>
-                                                            <option value="<?= $role['id'] ?>" >
+                                                            <option value="<?= $role['id'] ?>" <?= old('role_id') == $role['id'] ? 'selected' : '' ?>>
                                                                 <?= $role['name'] ?>
                                                              </option>
                                                         <?php endforeach; ?>
                                                    </select>
+                                                   <?php if (isset($errors['role_id'])): ?>
+                                                          <div class="text-danger"><?= $errors['role_id'] ?></div>
+                                                      <?php endif; ?>
                                                 </div>
 
                                                 <div class="form-group">
@@ -148,7 +151,7 @@
                                                         Register
                                                     </button>
                                                 </div>
-                                            </form>
+                                            <?= form_close() ?>
                                             <div class="text-center mt-3">
                                                 <a class="small" href="<?= base_url('login') ?>">Already have an account? Login!</a>
                                             </div>

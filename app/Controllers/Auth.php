@@ -8,7 +8,7 @@ class Auth extends BaseController
 {
     protected $userModel;
     protected $session;
-    
+
     public function __construct()
     {
         $this->userModel = new UserModel();
@@ -29,7 +29,7 @@ class Auth extends BaseController
 
     public function login()
     {
-        if (!$this->validate([
+       if (!$this->validate([
             'username' => [
                 'rules' => 'required',
                 'errors' => [
@@ -73,19 +73,18 @@ class Auth extends BaseController
         }
     }
 
+
     public function register()
     {
-
-        $roleModel = new \App\Models\RoleModel(); // Pastikan model role tersedia
+        $roleModel = new \App\Models\RoleModel();
         $roles = $roleModel->getNonAdminRoles();
 
-
         if ($this->request->getMethod() === 'post') {
-            if (!$this->validate([
+            $validationRules = [
                 'nama_lengkap' => [
                     'rules' => 'required',
                     'errors' => [
-                        'required' => 'Nama_lengkap harus diisi'
+                        'required' => 'Nama Lengkap harus diisi'
                     ]
                 ],
                 'username' => [
@@ -124,21 +123,29 @@ class Auth extends BaseController
                         'integer' => 'Role tidak valid'
                     ]
                 ]
-            ])) {
-                return redirect()->back()->withInput();
+            ];
+
+            if (!$this->validate($validationRules)) {
+                return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
             }
 
             $data = [
                 'nama_lengkap' => $this->request->getPost('nama_lengkap'),
                 'username' => $this->request->getPost('username'),
                 'email' => $this->request->getPost('email'),
-                'password' => $this->request->getPost('password'), // Sudah di-hash oleh Model
+                'password' => $this->request->getPost('password'),
                 'role_id' => $this->request->getPost('role_id'),
             ];
 
-            $this->userModel->insert($data);
-            $this->session->setFlashdata('success', 'Registrasi berhasil, silahkan login');
-            return redirect()->to('/login');
+            try {
+                $this->userModel->insert($data);
+                $this->session->setFlashdata('success', 'Registrasi berhasil, silahkan login');
+                return redirect()->to('/login');
+            } catch (\Exception $e) {
+                log_message('error', 'Error saat registrasi: ' . $e->getMessage());
+                $this->session->setFlashdata('error', 'Terjadi kesalahan saat registrasi. Mohon coba lagi.');
+                return redirect()->back()->withInput();
+            }
         }
 
         return view('auth/register',[
@@ -146,6 +153,7 @@ class Auth extends BaseController
             'roles' => $roles,
         ]);
     }
+
 
     public function logout()
     {
