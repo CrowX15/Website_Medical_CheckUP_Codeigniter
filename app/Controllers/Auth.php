@@ -3,47 +3,36 @@
 namespace App\Controllers;
 
 use App\Models\UserModel;
+use App\Models\RoleModel;
 
 class Auth extends BaseController
 {
     protected $userModel;
+    protected $roleModel;
     protected $session;
 
     public function __construct()
     {
         $this->userModel = new UserModel();
+        $this->roleModel = new RoleModel();
         $this->session = session();
     }
 
     public function index()
     {
-        // Jika sudah login, redirect ke dashboard sesuai role
         if ($this->session->has('logged_in')) {
             return $this->redirectToDashboard();
         }
-        
-        return view('auth/login', [
-            'title' => 'Login - Medical Checkup'
-        ]);
+        return view('auth/login', ['title' => 'Login - Medical Checkup']);
     }
 
     public function login()
     {
-       if (!$this->validate([
-            'username' => [
-                'rules' => 'required',
-                'errors' => [
-                    'required' => 'Username harus diisi'
-                ]
-            ],
-            'password' => [
-                'rules' => 'required',
-                'errors' => [
-                    'required' => 'Password harus diisi'
-                ]
-            ]
+        if (!$this->validate([
+            'username' => ['rules' => 'required', 'errors' => ['required' => 'Username harus diisi']],
+            'password' => ['rules' => 'required', 'errors' => ['required' => 'Password harus diisi']]
         ])) {
-            return redirect()->back()->withInput();
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors()); // Kirim error validasi ke view
         }
 
         $username = $this->request->getPost('username');
@@ -60,7 +49,6 @@ class Auth extends BaseController
                     'role_id' => $user['role_id'],
                     'logged_in' => true
                 ];
-
                 $this->session->set($sessionData);
                 return $this->redirectToDashboard();
             } else {
@@ -74,59 +62,22 @@ class Auth extends BaseController
     }
 
 
-    public function register()
+     public function register()
     {
-        $roleModel = new \App\Models\RoleModel();
-        $roles = $roleModel->getNonAdminRoles();
+        $roles = $this->roleModel->getNonAdminRoles();
 
         if ($this->request->getMethod() === 'post') {
             $validationRules = [
-                'nama_lengkap' => [
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => 'Nama Lengkap harus diisi'
-                    ]
-                ],
-                'username' => [
-                    'rules' => 'required|is_unique[user.username]',
-                    'errors' => [
-                        'required' => 'Username harus diisi',
-                        'is_unique' => 'Username sudah digunakan'
-                    ]
-                ],
-                'email' => [
-                    'rules' => 'required|valid_email|is_unique[user.email]',
-                    'errors' => [
-                        'required' => 'Email harus diisi',
-                        'valid_email' => 'Format email tidak valid',
-                        'is_unique' => 'Email sudah digunakan'
-                    ]
-                ],
-                'password' => [
-                    'rules' => 'required|min_length[6]',
-                    'errors' => [
-                        'required' => 'Password harus diisi',
-                        'min_length' => 'Password minimal 6 karakter'
-                    ]
-                ],
-                'confirm_password' => [
-                    'rules' => 'required|matches[password]',
-                    'errors' => [
-                        'required' => 'Konfirmasi password harus diisi',
-                        'matches' => 'Konfirmasi password tidak cocok'
-                    ]
-                ],
-                'role_id' => [
-                    'rules' => 'required|integer',
-                    'errors' => [
-                        'required' => 'Role harus dipilih',
-                        'integer' => 'Role tidak valid'
-                    ]
-                ]
+                'nama_lengkap' => ['rules' => 'required', 'errors' => ['required' => 'Nama Lengkap harus diisi']],
+                'username' => ['rules' => 'required|is_unique[user.username]', 'errors' => ['required' => 'Username harus diisi', 'is_unique' => 'Username sudah digunakan']],
+                'email' => ['rules' => 'required|valid_email|is_unique[user.email]', 'errors' => ['required' => 'Email harus diisi', 'valid_email' => 'Format email tidak valid', 'is_unique' => 'Email sudah digunakan']],
+                'password' => ['rules' => 'required|min_length[6]', 'errors' => ['required' => 'Password harus diisi', 'min_length' => 'Password minimal 6 karakter']],
+                'confirm_password' => ['rules' => 'required|matches[password]', 'errors' => ['required' => 'Konfirmasi password harus diisi', 'matches' => 'Konfirmasi password tidak cocok']],
+                'role_id' => ['rules' => 'required|integer', 'errors' => ['required' => 'Role harus dipilih', 'integer' => 'Role tidak valid']]
             ];
 
             if (!$this->validate($validationRules)) {
-                return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+                return redirect()->back()->withInput()->with('errors', $this->validator->getErrors()); // Kirim error validasi ke view
             }
 
             $data = [
@@ -137,22 +88,24 @@ class Auth extends BaseController
                 'role_id' => $this->request->getPost('role_id'),
             ];
 
+
             try {
-                $this->userModel->insert($data);
-                $this->session->setFlashdata('success', 'Registrasi berhasil, silahkan login');
-                return redirect()->to('/login');
-            } catch (\Exception $e) {
-                log_message('error', 'Error saat registrasi: ' . $e->getMessage());
-                $this->session->setFlashdata('error', 'Terjadi kesalahan saat registrasi. Mohon coba lagi.');
-                return redirect()->back()->withInput();
+                 $this->userModel->insert($data);
+                 $this->session->setFlashdata('success', 'Registrasi berhasil, silahkan login');
+                  return redirect()->to('/login');
+             } catch (\Exception $e) {
+                 log_message('error', 'Error saat registrasi: ' . $e->getMessage());
+                 $this->session->setFlashdata('error', 'Terjadi kesalahan saat registrasi. Mohon coba lagi.');
+                  return redirect()->back()->withInput();
             }
         }
 
-        return view('auth/register',[
+        return view('auth/register', [
             'title' => 'Register - Medical Checkup',
             'roles' => $roles,
         ]);
     }
+
 
 
     public function logout()

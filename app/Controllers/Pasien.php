@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\PasienModel;
+use CodeIgniter\Database\Exceptions\DatabaseException;
 
 class Pasien extends BaseController
 {
@@ -59,19 +60,25 @@ class Pasien extends BaseController
             ];
 
             if ($this->validate($rules)) {
-                $this->pasienModel->save([
-                    'no_rm' => $this->request->getPost('no_rm'),
-                    'nama' => $this->request->getPost('nama'),
-                    'perusahaan' => $this->request->getPost('perusahaan'),
-                    'nik' => $this->request->getPost('nik'),
-                    'departemen' => $this->request->getPost('departemen'),
-                    'bagian' => $this->request->getPost('bagian'),
-                    'usia' => $this->request->getPost('usia'),
-                    'tgl_mcu' => $this->request->getPost('tgl_mcu')
-                ]);
+                try {
+                    $this->pasienModel->save([
+                        'no_rm' => $this->request->getPost('no_rm'),
+                        'nama' => $this->request->getPost('nama'),
+                        'perusahaan' => $this->request->getPost('perusahaan'),
+                        'nik' => $this->request->getPost('nik'),
+                        'departemen' => $this->request->getPost('departemen'),
+                        'bagian' => $this->request->getPost('bagian'),
+                        'usia' => $this->request->getPost('usia'),
+                        'tgl_mcu' => $this->request->getPost('tgl_mcu')
+                    ]);
+                    session()->setFlashdata('success', 'Data berhasil ditambahkan');
+                    return redirect()->to('/Pasien');
 
-                session()->setFlashdata('success', 'Data berhasil ditambahkan');
-                return redirect()->to('/Pasien');
+                } catch (DatabaseException $e) {
+                    session()->setFlashdata('error', 'Gagal menyimpan data. ' . $e->getMessage());
+                    return redirect()->back()->withInput();
+                }
+                 
             }
             
             $data['validation'] = $this->validator;
@@ -102,19 +109,26 @@ class Pasien extends BaseController
             ];
     
             if ($this->validate($rules)) {
-                $this->pasienModel->save([
-                    'no_rm' => $no_rm,
-                    'nama' => $this->request->getPost('nama'),
-                    'perusahaan' => $this->request->getPost('perusahaan'),
-                    'nik' => $this->request->getPost('nik'),
-                    'departemen' => $this->request->getPost('departemen'),
-                    'bagian' => $this->request->getPost('bagian'),
-                    'usia' => $this->request->getPost('usia'),
-                    'tgl_mcu' => $this->request->getPost('tgl_mcu')
-                ]);
+                try {
+                     $this->pasienModel->save([
+                        'no_rm' => $no_rm,
+                        'nama' => $this->request->getPost('nama'),
+                        'perusahaan' => $this->request->getPost('perusahaan'),
+                        'nik' => $this->request->getPost('nik'),
+                        'departemen' => $this->request->getPost('departemen'),
+                        'bagian' => $this->request->getPost('bagian'),
+                        'usia' => $this->request->getPost('usia'),
+                        'tgl_mcu' => $this->request->getPost('tgl_mcu')
+                    ]);
     
-                session()->setFlashdata('success', 'Data berhasil diupdate');
-                return redirect()->to('/Pasien');
+                    session()->setFlashdata('success', 'Data berhasil diupdate');
+                    return redirect()->to('/Pasien');
+
+                } catch (DatabaseException $e) {
+                     session()->setFlashdata('error', 'Gagal menyimpan data. ' . $e->getMessage());
+                     return redirect()->back()->withInput();
+                }
+                
             }
     
             $data['validation'] = $this->validator; // Kirim objek validasi ke view
